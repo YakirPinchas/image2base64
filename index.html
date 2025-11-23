@@ -972,6 +972,23 @@
       URL.revokeObjectURL(url);
     });
 
+    // helper: dataURL -> Blob (לשימוש בהורדת תמונה מ-Base64)
+    function dataUrlToBlob(dataUrl) {
+      const parts = dataUrl.split(',');
+      if (parts.length < 2) return null;
+
+      const mimeMatch = parts[0].match(/data:(.*?);base64/);
+      const mime = mimeMatch ? mimeMatch[1] : 'image/png';
+
+      const bstr = atob(parts[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new Blob([u8arr], { type: mime });
+    }
+
     // --- Base64 → Image ---
     singleClearBtn.addEventListener("click", () => {
       singleBase64Input.value = "";
@@ -1040,12 +1057,21 @@
         rightErrorB64.textContent = "No image to download. Paste valid Base64 first.";
         return;
       }
+
+      const blob = dataUrlToBlob(currentImageDataUrl);
+      if (!blob) {
+        rightErrorB64.textContent = "Could not prepare image for download.";
+        return;
+      }
+
+      const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.href = currentImageDataUrl;
+      link.href = url;
       link.download = "image-from-base64.png";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     });
   </script>
 </body>
