@@ -251,6 +251,63 @@
       text-align: center;
     }
 
+    .thumbs-wrapper {
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      max-height: 110px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      display: none;
+    }
+
+    .thumbs-header {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .thumbs-grid {
+      display: flex;
+      gap: 6px;
+    }
+
+    .thumb-item {
+      position: relative;
+      flex: 0 0 auto;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.1s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .thumb-item img {
+      display: block;
+      height: 64px;
+      width: auto;
+    }
+
+    .thumb-item:hover {
+      transform: translateY(-1px) scale(1.02);
+      border-color: rgba(148, 163, 184, 0.7);
+    }
+
+    .thumb-item.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.7);
+    }
+
+    .thumbs-placeholder {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
     .error-text {
       color: var(--danger);
       font-size: 0.8rem;
@@ -374,8 +431,8 @@
 
     .single-b64-textarea {
       width: 100%;
-      min-height: 220px;
-      max-height: 360px;
+      min-height: 120px;
+      max-height: 260px;
       border-radius: 12px;
       border: 1px solid rgba(75, 85, 99, 0.8);
       background: rgba(15, 23, 42, 0.92);
@@ -429,7 +486,6 @@
           <p><strong>Click to select image(s)</strong> or drop them here</p>
         </div>
 
-        <!-- hidden input -->
         <input type="file" id="fileInput" accept="image/*" multiple style="display:none;" />
 
         <div class="options-row" id="optionsRow">
@@ -456,21 +512,31 @@
           <img id="previewImage" alt="Preview" style="display:none;" />
         </div>
 
+        <!-- Thumbnails -->
+        <div class="thumbs-wrapper" id="thumbsWrapper">
+          <div class="thumbs-header">
+            <span>Thumbnails</span>
+            <span id="thumbsCountLabel"></span>
+          </div>
+          <div class="thumbs-placeholder" id="thumbsPlaceholder">
+            Thumbnails will appear here after selecting images.
+          </div>
+          <div class="thumbs-grid" id="thumbsGrid"></div>
+        </div>
+
         <div class="error-text" id="leftError"></div>
       </div>
 
       <!-- RIGHT -->
       <div class="card">
-        <!-- Panel: Image → Base64 -->
+        <!-- Image → Base64 -->
         <div id="panelImageToBase64">
           <div class="card-header">
-            <div id="rightTitleImg">Base64 output (per image)</div>
-            <div id="rightHintImg">Each image gets its own block</div>
+            <div>Base64 output (per image)</div>
+            <div>Each image gets its own block</div>
           </div>
 
-          <div id="cardsContainer" class="b64-cards-container">
-            <!-- כרטיסים יווצרו בדינמיות -->
-          </div>
+          <div id="cardsContainer" class="b64-cards-container"></div>
 
           <div class="download-all-row" id="downloadAllRow">
             <span id="imagesSummaryText">No images yet.</span>
@@ -480,17 +546,24 @@
           <div class="error-text" id="rightErrorImg"></div>
         </div>
 
-        <!-- Panel: Base64 → Image -->
+        <!-- Base64 → Image -->
         <div id="panelBase64ToImage" class="hidden">
           <div class="card-header">
-            <div id="rightTitleB64">Base64 input</div>
-            <div id="rightHintB64">Paste Base64 to preview image</div>
+            <div>Base64 input</div>
+            <div>Paste Base64 to preview</div>
           </div>
 
           <textarea
             id="singleBase64Input"
             class="single-b64-textarea"
             placeholder="Paste your Base64 string here (with or without data:image/...;base64,)"></textarea>
+
+          <div class="preview-wrapper" id="previewWrapperB64">
+            <div class="preview-placeholder" id="previewPlaceholderB64">
+              Image preview will appear here.
+            </div>
+            <img id="previewImageB64" alt="Preview from Base64" style="display:none;" />
+          </div>
 
           <div class="buttons-row">
             <button class="btn small" id="singleClearBtn">Clear</button>
@@ -505,7 +578,6 @@
   </div>
 
   <script>
-    // Elements & state
     const modeImageToBase64Btn = document.getElementById("modeImageToBase64");
     const modeBase64ToImageBtn = document.getElementById("modeBase64ToImage");
 
@@ -513,13 +585,18 @@
     const fileInput = document.getElementById("fileInput");
     const previewImage = document.getElementById("previewImage");
     const previewPlaceholder = document.getElementById("previewPlaceholder");
-    const optionsRow = document.getElementById("optionsRow");
+
+    const thumbsWrapper = document.getElementById("thumbsWrapper");
+    const thumbsGrid = document.getElementById("thumbsGrid");
+    const thumbsPlaceholder = document.getElementById("thumbsPlaceholder");
+    const thumbsCountLabel = document.getElementById("thumbsCountLabel");
 
     const leftError = document.getElementById("leftError");
 
     const formatSelect = document.getElementById("formatSelect");
     const qualityRange = document.getElementById("qualityRange");
     const qualityValue = document.getElementById("qualityValue");
+    const optionsRow = document.getElementById("optionsRow");
 
     const panelImageToBase64 = document.getElementById("panelImageToBase64");
     const panelBase64ToImage = document.getElementById("panelBase64ToImage");
@@ -531,6 +608,8 @@
     const rightErrorImg = document.getElementById("rightErrorImg");
 
     const singleBase64Input = document.getElementById("singleBase64Input");
+    const previewImageB64 = document.getElementById("previewImageB64");
+    const previewPlaceholderB64 = document.getElementById("previewPlaceholderB64");
     const singleClearBtn = document.getElementById("singleClearBtn");
     const singleCopyBtn = document.getElementById("singleCopyBtn");
     const singleDownloadImageBtn = document.getElementById("singleDownloadImageBtn");
@@ -538,12 +617,13 @@
 
     const clearBtn = document.getElementById("clearBtn");
     const copyBtn = document.getElementById("copyBtn");
-    const downloadBtn = document.getElementById("downloadBtn"); // לא בשימוש במצב החדש, נשאיר אם תרצה בעתיד
+    const downloadBtn = document.getElementById("downloadBtn"); // אם תרצה בעתיד
 
     let currentMode = "imageToBase64";
     let lastFiles = null;
     let currentImageDataUrl = "";
-    let imageItems = []; // {name, base64, dataUrl}
+    let imageItems = [];  // { index, name, base64, dataUrl }
+    let currentPreviewIndex = -1;
 
     function setMode(mode) {
       currentMode = mode;
@@ -551,10 +631,22 @@
       rightErrorImg.textContent = "";
       rightErrorB64.textContent = "";
 
+      // איפוס פריוויו שמאל
       previewImage.style.display = "none";
       previewImage.src = "";
       previewPlaceholder.style.display = "block";
-      currentImageDataUrl = "";
+      currentPreviewIndex = -1;
+
+      // איפוס thumbnails
+      thumbsGrid.innerHTML = "";
+      thumbsPlaceholder.style.display = "block";
+      thumbsCountLabel.textContent = "";
+      thumbsWrapper.style.display = "none";
+
+      // איפוס Base64→Image
+      previewImageB64.style.display = "none";
+      previewImageB64.src = "";
+      previewPlaceholderB64.style.display = "block";
 
       if (mode === "imageToBase64") {
         modeImageToBase64Btn.classList.add("active");
@@ -583,7 +675,7 @@
         uploadArea.style.pointerEvents = "none";
         fileInput.disabled = true;
 
-        // reset image-side data
+        // איפוס נתוני תמונות
         imageItems = [];
         renderCards();
       }
@@ -591,10 +683,9 @@
 
     modeImageToBase64Btn.addEventListener("click", () => setMode("imageToBase64"));
     modeBase64ToImageBtn.addEventListener("click", () => setMode("base64ToImage"));
-
     setMode("imageToBase64");
 
-    // Upload handlers
+    // Upload – Image→Base64
     uploadArea.addEventListener("click", () => {
       if (currentMode !== "imageToBase64") return;
       fileInput.click();
@@ -625,6 +716,12 @@
       previewImage.style.display = "none";
       previewImage.src = "";
       previewPlaceholder.style.display = "block";
+      currentPreviewIndex = -1;
+
+      thumbsGrid.innerHTML = "";
+      thumbsPlaceholder.style.display = "block";
+      thumbsCountLabel.textContent = "";
+      thumbsWrapper.style.display = "none";
 
       const files = Array.from(fileList).filter((f) => {
         if (f.type && f.type.startsWith("image/")) return true;
@@ -662,15 +759,12 @@
           }
           processedCount++;
           if (processedCount === files.length) {
-            // sort by original order
             imageItems.sort((a, b) => a.index - b.index);
             renderCards();
-            // preview first image (if any)
+            renderThumbnails();
+
             if (imageItems.length > 0) {
-              currentImageDataUrl = imageItems[0].dataUrl;
-              previewImage.src = currentImageDataUrl;
-              previewImage.style.display = "block";
-              previewPlaceholder.style.display = "none";
+              setActivePreview(0);
             }
           }
         });
@@ -804,12 +898,51 @@
         card.appendChild(header);
         card.appendChild(textarea);
         card.appendChild(buttonsRow);
-
         cardsContainer.appendChild(card);
       });
     }
 
-    // Quality & format re-run conversion
+    function renderThumbnails() {
+      thumbsGrid.innerHTML = "";
+      if (!imageItems || imageItems.length === 0) {
+        thumbsWrapper.style.display = "none";
+        return;
+      }
+      thumbsWrapper.style.display = "block";
+      thumbsPlaceholder.style.display = "none";
+      thumbsCountLabel.textContent = `${imageItems.length} image${imageItems.length > 1 ? "s" : ""}`;
+
+      imageItems.forEach((item, index) => {
+        const thumbItem = document.createElement("div");
+        thumbItem.className = "thumb-item";
+        const img = document.createElement("img");
+        img.src = item.dataUrl;
+        img.alt = item.name;
+        thumbItem.appendChild(img);
+
+        thumbItem.addEventListener("click", () => {
+          setActivePreview(index);
+        });
+
+        thumbsGrid.appendChild(thumbItem);
+      });
+    }
+
+    function setActivePreview(index) {
+      if (!imageItems[index]) return;
+      currentPreviewIndex = index;
+      const item = imageItems[index];
+      currentImageDataUrl = item.dataUrl;
+      previewImage.src = currentImageDataUrl;
+      previewImage.style.display = "block";
+      previewPlaceholder.style.display = "none";
+
+      Array.from(thumbsGrid.children).forEach((el, i) => {
+        if (i === index) el.classList.add("active");
+        else el.classList.remove("active");
+      });
+    }
+
     qualityRange.addEventListener("input", () => {
       qualityValue.textContent = qualityRange.value + "%";
       if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
@@ -823,14 +956,12 @@
       }
     });
 
-    // Download all as .txt
     downloadAllBtn.addEventListener("click", () => {
       rightErrorImg.textContent = "";
       if (!imageItems || imageItems.length === 0) {
         rightErrorImg.textContent = "Nothing to download. Please upload image(s) first.";
         return;
       }
-
       let content = "";
       imageItems.forEach((item) => {
         content += `// ${item.name}\n${item.base64}\n\n`;
@@ -846,27 +977,32 @@
       URL.revokeObjectURL(url);
     });
 
-    // Clear (image→base64)
     clearBtn.addEventListener("click", () => {
       leftError.textContent = "";
       rightErrorImg.textContent = "";
       previewImage.style.display = "none";
       previewImage.src = "";
+      previewPlaceholder.textContent = "No image selected yet.";
       previewPlaceholder.style.display = "block";
       fileInput.value = "";
       lastFiles = null;
       imageItems = [];
       renderCards();
+
+      thumbsGrid.innerHTML = "";
+      thumbsWrapper.style.display = "none";
+      thumbsPlaceholder.style.display = "block";
+      thumbsCountLabel.textContent = "";
     });
 
-    // --- Base64 -> Image panel logic ---
+    // --- Base64 → Image ---
     singleClearBtn.addEventListener("click", () => {
       singleBase64Input.value = "";
       rightErrorB64.textContent = "";
       currentImageDataUrl = "";
-      previewImage.src = "";
-      previewImage.style.display = "none";
-      previewPlaceholder.style.display = "block";
+      previewImageB64.src = "";
+      previewImageB64.style.display = "none";
+      previewPlaceholderB64.style.display = "block";
     });
 
     singleCopyBtn.addEventListener("click", async () => {
@@ -891,13 +1027,14 @@
 
     singleBase64Input.addEventListener("input", () => {
       if (currentMode !== "base64ToImage") return;
-      const value = singleBase64Input.value.trim();
+
       rightErrorB64.textContent = "";
+      const value = singleBase64Input.value.trim();
       if (!value) {
         currentImageDataUrl = "";
-        previewImage.src = "";
-        previewImage.style.display = "none";
-        previewPlaceholder.style.display = "block";
+        previewImageB64.src = "";
+        previewImageB64.style.display = "none";
+        previewPlaceholderB64.style.display = "block";
         return;
       }
 
@@ -912,9 +1049,9 @@
       try {
         const dataUrl = "data:image/png;base64," + base64;
         currentImageDataUrl = dataUrl;
-        previewImage.src = dataUrl;
-        previewImage.style.display = "block";
-        previewPlaceholder.style.display = "none";
+        previewImageB64.src = dataUrl;
+        previewImageB64.style.display = "block";
+        previewPlaceholderB64.style.display = "none";
       } catch (err) {
         rightErrorB64.textContent = "Invalid Base64 string.";
       }
