@@ -430,7 +430,6 @@
         </div>
 
         <label class="upload-area" id="uploadArea">
-          <!-- multiple קיבלנו כאן -->
           <input type="file" id="fileInput" accept="image/*" multiple />
           <p><strong>Click to select image(s)</strong> or drop them here</p>
           <span>Everything stays in your browser. No uploads.</span>
@@ -538,7 +537,7 @@
 
     let currentMode = "imageToBase64";
     let currentImageDataUrl = "";
-    let lastFiles = null; // לשימוש חוזר כשמשנים פורמט/איכות
+    let lastFiles = null;
 
     function setMode(mode) {
       currentMode = mode;
@@ -621,7 +620,12 @@
       previewImage.src = "";
       previewPlaceholder.style.display = "block";
 
-      const files = Array.from(fileList).filter((f) => f.type.startsWith("image/"));
+      const files = Array.from(fileList).filter((f) => {
+        if (f.type && f.type.startsWith("image/")) return true;
+        const name = (f.name || "").toLowerCase();
+        return name.match(/\.(png|jpe?g|webp|gif|bmp)$/i);
+      });
+
       if (files.length === 0) {
         leftError.textContent = "Please select one or more valid image files.";
         return;
@@ -635,32 +639,20 @@
         previewPlaceholder.textContent = `Multiple images selected (${files.length}). Previewing first one.`;
       }
 
-      // נבנה סטרינג תוצאה שמכיל בלוק לכל קובץ
       let output = "";
       let processedCount = 0;
 
       files.forEach((file, index) => {
         processSingleFile(file, index, files.length, (resultBase64, dataUrl) => {
-          if (!resultBase64) {
-            // במקרה של שגיאה – נקפוץ הלאה
-            processedCount++;
-            if (processedCount === files.length) {
-              textArea.value = output.trim();
+          if (resultBase64) {
+            output += `// ${file.name}\n${resultBase64}\n\n`;
+            if (index === 0 && dataUrl) {
+              currentImageDataUrl = dataUrl;
+              previewImage.src = dataUrl;
+              previewImage.style.display = "block";
+              previewPlaceholder.style.display = "none";
             }
-            return;
           }
-
-          // מוסיפים בלוק מסודר
-          output += `// ${file.name}\n${resultBase64}\n\n`;
-
-          // נעשה פריוויו לפי הקובץ הראשון
-          if (index === 0 && dataUrl) {
-            currentImageDataUrl = dataUrl;
-            previewImage.src = dataUrl;
-            previewImage.style.display = "block";
-            previewPlaceholder.style.display = "none";
-          }
-
           processedCount++;
           if (processedCount === files.length) {
             textArea.value = output.trim();
@@ -670,8 +662,9 @@
     }
 
     function processSingleFile(file, index, total, callback) {
-      // callback(base64String or null, dataUrl or null)
-      if (!file.type.startsWith("image/")) {
+      const isImageByType = file.type && file.type.startsWith("image/");
+      const isImageByName = (file.name || "").toLowerCase().match(/\.(png|jpe?g|webp|gif|bmp)$/i);
+      if (!isImageByType && !isImageByName) {
         callback(null, null);
         return;
       }
@@ -683,14 +676,12 @@
         const chosenFormat = formatSelect.value;
         const quality = Number(qualityRange.value) / 100;
 
-        // אם המשתמש בחר "Original" – לא נשתמש בקאנבס, פשוט ניקח את ה-dataURL כמו שהוא
         if (chosenFormat === "original") {
           const base64String = (originalDataUrl.split(",")[1] || "").trim();
           callback(base64String, originalDataUrl);
           return;
         }
 
-        // אחרת – ניצור תמונה וקאנבס לצורך המרה/דחיסה
         const img = new Image();
         img.onload = function () {
           try {
@@ -726,7 +717,6 @@
       reader.readAsDataURL(file);
     }
 
-    // עדכון טקסט איכות והמרה מחדש אם יש כבר קבצים
     qualityRange.addEventListener("input", () => {
       qualityValue.textContent = qualityRange.value + "%";
       if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
@@ -735,7 +725,6 @@
     });
 
     formatSelect.addEventListener("change", () => {
-      // אם הפורמט הוא original – האיכות פחות רלוונטית, אבל נשאיר אותו פעיל כדי לא לסבך
       if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
         handleFiles(lastFiles);
       }
@@ -817,7 +806,6 @@
           return;
         }
 
-        // ננסה לקחת רק את ה-base64 עצמו
         let base64 = value;
         if (base64.startsWith("data:")) {
           const commaIndex = base64.indexOf(",");
