@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Image ⇆ Base64 Converter</title>
+  <title>Image ⇆ Base64 Converter – Online Tool</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Simple online tool to convert images to Base64 and Base64 back to images. Runs fully in your browser."
+    content="Free online Image to Base64 and Base64 to Image converter. Fast, secure and runs fully in your browser – no files are uploaded to any server."
   />
   <style>
     :root {
@@ -318,6 +318,34 @@
       color: var(--accent);
       text-decoration: none;
     }
+
+    .seo-section {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(75, 85, 99, 0.7);
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .seo-section h2 {
+      font-size: 1rem;
+      margin: 0 0 8px 0;
+      color: #e5e7eb;
+    }
+
+    .seo-section p {
+      margin: 4px 0;
+    }
+
+    .seo-section ul {
+      margin: 6px 0 0 18px;
+      padding: 0;
+    }
+
+    .seo-section li {
+      margin-bottom: 3px;
+    }
   </style>
 </head>
 <body>
@@ -386,6 +414,23 @@
         <div class="error-text" id="rightError"></div>
       </div>
     </div>
+
+    <section class="seo-section">
+      <h2>Online Image to Base64 &amp; Base64 to Image Converter</h2>
+      <p>
+        This free tool lets you quickly convert images to Base64 strings, or paste an existing Base64 value and preview the image in your browser.
+        All conversions run locally in your browser using JavaScript – your files are never uploaded or stored on any server.
+      </p>
+      <p>Common use cases:</p>
+      <ul>
+        <li>Embedding small images directly in HTML, CSS or JSON as Base64.</li>
+        <li>Debugging frontend or backend code that works with Base64-encoded images.</li>
+        <li>Generating inline images for emails, configuration files or testing.</li>
+      </ul>
+      <p>
+        The tool supports standard image formats like PNG, JPG and WEBP and works on both desktop and mobile browsers.
+      </p>
+    </section>
 
     <footer class="footer">
       <span>Tip: You can paste Base64 with or without <code>data:image/...;base64,</code>.</span>
