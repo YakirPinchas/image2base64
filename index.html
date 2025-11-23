@@ -1052,6 +1052,7 @@
     });
 
     singleDownloadImageBtn.addEventListener("click", () => {
+      rightErrorB64.style.color = "#f97373";
       rightErrorB64.textContent = "";
       if (!currentImageDataUrl) {
         rightErrorB64.textContent = "No image to download. Paste valid Base64 first.";
@@ -1070,8 +1071,17 @@
       link.download = "image-from-base64.png";
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      setTimeout(() => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }, 0);
+
+      rightErrorB64.style.color = "#4ade80";
+      rightErrorB64.textContent = "Image download started. Check your downloads folder.";
+      setTimeout(() => {
+        rightErrorB64.textContent = "";
+        rightErrorB64.style.color = "#f97373";
+      }, 2500);
     });
   </script>
 </body>
