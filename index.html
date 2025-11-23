@@ -615,10 +615,6 @@
     const singleDownloadImageBtn = document.getElementById("singleDownloadImageBtn");
     const rightErrorB64 = document.getElementById("rightErrorB64");
 
-    const clearBtn = document.getElementById("clearBtn");
-    const copyBtn = document.getElementById("copyBtn");
-    const downloadBtn = document.getElementById("downloadBtn"); // אם תרצה בעתיד
-
     let currentMode = "imageToBase64";
     let lastFiles = null;
     let currentImageDataUrl = "";
@@ -631,19 +627,18 @@
       rightErrorImg.textContent = "";
       rightErrorB64.textContent = "";
 
-      // איפוס פריוויו שמאל
+      // reset left preview + thumbnails
       previewImage.style.display = "none";
       previewImage.src = "";
       previewPlaceholder.style.display = "block";
       currentPreviewIndex = -1;
 
-      // איפוס thumbnails
       thumbsGrid.innerHTML = "";
       thumbsPlaceholder.style.display = "block";
       thumbsCountLabel.textContent = "";
       thumbsWrapper.style.display = "none";
 
-      // איפוס Base64→Image
+      // reset Base64→Image preview
       previewImageB64.style.display = "none";
       previewImageB64.src = "";
       previewPlaceholderB64.style.display = "block";
@@ -661,6 +656,7 @@
         optionsRow.classList.remove("disabled");
         uploadArea.style.pointerEvents = "auto";
         fileInput.disabled = false;
+
       } else {
         modeImageToBase64Btn.classList.remove("active");
         modeBase64ToImageBtn.classList.add("active");
@@ -675,7 +671,7 @@
         uploadArea.style.pointerEvents = "none";
         fileInput.disabled = true;
 
-        // איפוס נתוני תמונות
+        // במעבר למצב Base64→Image מנקים את כרטיסי התמונות
         imageItems = [];
         renderCards();
       }
@@ -685,7 +681,7 @@
     modeBase64ToImageBtn.addEventListener("click", () => setMode("base64ToImage"));
     setMode("imageToBase64");
 
-    // Upload – Image→Base64
+    // --- Image → Base64: העלאה ---
     uploadArea.addEventListener("click", () => {
       if (currentMode !== "imageToBase64") return;
       fileInput.click();
@@ -762,7 +758,6 @@
             imageItems.sort((a, b) => a.index - b.index);
             renderCards();
             renderThumbnails();
-
             if (imageItems.length > 0) {
               setActivePreview(0);
             }
@@ -975,24 +970,6 @@
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-    });
-
-    clearBtn.addEventListener("click", () => {
-      leftError.textContent = "";
-      rightErrorImg.textContent = "";
-      previewImage.style.display = "none";
-      previewImage.src = "";
-      previewPlaceholder.textContent = "No image selected yet.";
-      previewPlaceholder.style.display = "block";
-      fileInput.value = "";
-      lastFiles = null;
-      imageItems = [];
-      renderCards();
-
-      thumbsGrid.innerHTML = "";
-      thumbsWrapper.style.display = "none";
-      thumbsPlaceholder.style.display = "block";
-      thumbsCountLabel.textContent = "";
     });
 
     // --- Base64 → Image ---
