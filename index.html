@@ -226,25 +226,6 @@
       accent-color: var(--accent);
     }
 
-    textarea {
-      width: 100%;
-      min-height: 220px;
-      max-height: 360px;
-      border-radius: 12px;
-      border: 1px solid rgba(75, 85, 99, 0.8);
-      background: rgba(15, 23, 42, 0.92);
-      color: var(--text);
-      padding: 10px 11px;
-      font-size: 0.8rem;
-      resize: vertical;
-      outline: none;
-    }
-
-    textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
-    }
-
     .preview-wrapper {
       border-radius: 12px;
       background: rgba(15, 23, 42, 0.92);
@@ -270,61 +251,11 @@
       text-align: center;
     }
 
-    .thumbs-wrapper {
-      margin-top: 8px;
-      padding: 8px;
-      border-radius: 10px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      max-height: 110px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      display: none; /* מוצג רק כשיש תמונות */
-    }
-
-    .thumbs-header {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-bottom: 4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .thumbs-grid {
-      display: flex;
-      gap: 6px;
-    }
-
-    .thumb-item {
-      position: relative;
-      flex: 0 0 auto;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: transform 0.1s ease, border-color 0.12s ease, box-shadow 0.12s ease;
-    }
-
-    .thumb-item img {
-      display: block;
-      height: 64px;
-      width: auto;
-    }
-
-    .thumb-item:hover {
-      transform: translateY(-1px) scale(1.02);
-      border-color: rgba(148, 163, 184, 0.7);
-    }
-
-    .thumb-item.active {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.7);
-    }
-
-    .thumbs-placeholder {
-      font-size: 0.75rem;
-      color: var(--muted);
+    .error-text {
+      color: var(--danger);
+      font-size: 0.8rem;
+      margin-top: 4px;
+      min-height: 1em;
     }
 
     .buttons-row {
@@ -370,11 +301,94 @@
       filter: brightness(1.05);
     }
 
-    .error-text {
-      color: var(--danger);
+    .b64-cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .b64-card {
+      border-radius: 12px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: rgba(15, 23, 42, 0.98);
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .b64-card-header {
       font-size: 0.8rem;
-      margin-top: 4px;
-      min-height: 1em;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .b64-card-header strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .b64-card textarea {
+      width: 100%;
+      min-height: 90px;
+      max-height: 140px;
+      border-radius: 10px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text);
+      font-size: 0.78rem;
+      padding: 6px 7px;
+      resize: vertical;
+      outline: none;
+    }
+
+    .b64-card textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
+    }
+
+    .b64-card-buttons {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .download-all-row {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .single-b64-textarea {
+      width: 100%;
+      min-height: 220px;
+      max-height: 360px;
+      border-radius: 12px;
+      border: 1px solid rgba(75, 85, 99, 0.8);
+      background: rgba(15, 23, 42, 0.92);
+      color: var(--text);
+      padding: 10px 11px;
+      font-size: 0.8rem;
+      resize: vertical;
+      outline: none;
+    }
+
+    .single-b64-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
     }
 
     .disabled {
@@ -415,7 +429,7 @@
           <p><strong>Click to select image(s)</strong> or drop them here</p>
         </div>
 
-        <!-- hidden file input -->
+        <!-- hidden input -->
         <input type="file" id="fileInput" accept="image/*" multiple style="display:none;" />
 
         <div class="options-row" id="optionsRow">
@@ -442,94 +456,105 @@
           <img id="previewImage" alt="Preview" style="display:none;" />
         </div>
 
-        <!-- Thumbnails gallery -->
-        <div class="thumbs-wrapper" id="thumbsWrapper">
-          <div class="thumbs-header">
-            <span>Thumbnails</span>
-            <span id="thumbsCountLabel"></span>
-          </div>
-          <div class="thumbs-placeholder" id="thumbsPlaceholder">
-            Thumbnails will appear here after selecting images.
-          </div>
-          <div class="thumbs-grid" id="thumbsGrid"></div>
-        </div>
-
         <div class="error-text" id="leftError"></div>
       </div>
 
       <!-- RIGHT -->
       <div class="card">
-        <div class="card-header">
-          <div id="rightTitle">Base64 output</div>
-          <div id="rightHint">One block per image</div>
+        <!-- Panel: Image → Base64 -->
+        <div id="panelImageToBase64">
+          <div class="card-header">
+            <div id="rightTitleImg">Base64 output (per image)</div>
+            <div id="rightHintImg">Each image gets its own block</div>
+          </div>
+
+          <div id="cardsContainer" class="b64-cards-container">
+            <!-- כרטיסים יווצרו בדינמיות -->
+          </div>
+
+          <div class="download-all-row" id="downloadAllRow">
+            <span id="imagesSummaryText">No images yet.</span>
+            <button class="btn small" id="downloadAllBtn">Download all as .txt</button>
+          </div>
+
+          <div class="error-text" id="rightErrorImg"></div>
         </div>
 
-        <textarea id="textArea" placeholder="// my-image.png&#10;BASE64_STRING_HERE..."></textarea>
+        <!-- Panel: Base64 → Image -->
+        <div id="panelBase64ToImage" class="hidden">
+          <div class="card-header">
+            <div id="rightTitleB64">Base64 input</div>
+            <div id="rightHintB64">Paste Base64 to preview image</div>
+          </div>
 
-        <div class="buttons-row">
-          <button class="btn small" id="clearBtn">Clear</button>
-          <button class="btn small" id="copyBtn">Copy</button>
-          <button class="btn primary small" id="downloadBtn">Download</button>
+          <textarea
+            id="singleBase64Input"
+            class="single-b64-textarea"
+            placeholder="Paste your Base64 string here (with or without data:image/...;base64,)"></textarea>
+
+          <div class="buttons-row">
+            <button class="btn small" id="singleClearBtn">Clear</button>
+            <button class="btn small" id="singleCopyBtn">Copy</button>
+            <button class="btn primary small" id="singleDownloadImageBtn">Download image</button>
+          </div>
+
+          <div class="error-text" id="rightErrorB64"></div>
         </div>
-
-        <div class="error-text" id="rightError"></div>
       </div>
     </div>
   </div>
 
   <script>
-    // Elements
+    // Elements & state
     const modeImageToBase64Btn = document.getElementById("modeImageToBase64");
     const modeBase64ToImageBtn = document.getElementById("modeBase64ToImage");
 
     const uploadArea = document.getElementById("uploadArea");
     const fileInput = document.getElementById("fileInput");
-
     const previewImage = document.getElementById("previewImage");
     const previewPlaceholder = document.getElementById("previewPlaceholder");
-
-    const thumbsWrapper = document.getElementById("thumbsWrapper");
-    const thumbsGrid = document.getElementById("thumbsGrid");
-    const thumbsPlaceholder = document.getElementById("thumbsPlaceholder");
-    const thumbsCountLabel = document.getElementById("thumbsCountLabel");
+    const optionsRow = document.getElementById("optionsRow");
 
     const leftError = document.getElementById("leftError");
-    const rightError = document.getElementById("rightError");
-    const textArea = document.getElementById("textArea");
 
     const formatSelect = document.getElementById("formatSelect");
     const qualityRange = document.getElementById("qualityRange");
     const qualityValue = document.getElementById("qualityValue");
-    const optionsRow = document.getElementById("optionsRow");
+
+    const panelImageToBase64 = document.getElementById("panelImageToBase64");
+    const panelBase64ToImage = document.getElementById("panelBase64ToImage");
+
+    const cardsContainer = document.getElementById("cardsContainer");
+    const downloadAllRow = document.getElementById("downloadAllRow");
+    const downloadAllBtn = document.getElementById("downloadAllBtn");
+    const imagesSummaryText = document.getElementById("imagesSummaryText");
+    const rightErrorImg = document.getElementById("rightErrorImg");
+
+    const singleBase64Input = document.getElementById("singleBase64Input");
+    const singleClearBtn = document.getElementById("singleClearBtn");
+    const singleCopyBtn = document.getElementById("singleCopyBtn");
+    const singleDownloadImageBtn = document.getElementById("singleDownloadImageBtn");
+    const rightErrorB64 = document.getElementById("rightErrorB64");
 
     const clearBtn = document.getElementById("clearBtn");
     const copyBtn = document.getElementById("copyBtn");
-    const downloadBtn = document.getElementById("downloadBtn");
+    const downloadBtn = document.getElementById("downloadBtn"); // לא בשימוש במצב החדש, נשאיר אם תרצה בעתיד
 
     let currentMode = "imageToBase64";
     let lastFiles = null;
     let currentImageDataUrl = "";
-    let previewDataUrls = [];
-    let currentPreviewIndex = -1;
+    let imageItems = []; // {name, base64, dataUrl}
 
-    // Mode switching
     function setMode(mode) {
       currentMode = mode;
       leftError.textContent = "";
-      rightError.textContent = "";
-      textArea.value = "";
+      rightErrorImg.textContent = "";
+      rightErrorB64.textContent = "";
 
       previewImage.style.display = "none";
       previewImage.src = "";
       previewPlaceholder.style.display = "block";
-
       currentImageDataUrl = "";
-      lastFiles = null;
-      previewDataUrls = [];
-      thumbsGrid.innerHTML = "";
-      thumbsPlaceholder.style.display = "block";
-      thumbsCountLabel.textContent = "";
-      thumbsWrapper.style.display = "none";
 
       if (mode === "imageToBase64") {
         modeImageToBase64Btn.classList.add("active");
@@ -537,8 +562,9 @@
 
         document.getElementById("leftTitle").textContent = "Upload image(s)";
         document.getElementById("leftHint").textContent = "Select one or multiple images";
-        document.getElementById("rightTitle").textContent = "Base64 output";
-        document.getElementById("rightHint").textContent = "One block per image";
+
+        panelImageToBase64.classList.remove("hidden");
+        panelBase64ToImage.classList.add("hidden");
 
         optionsRow.classList.remove("disabled");
         uploadArea.style.pointerEvents = "auto";
@@ -548,13 +574,18 @@
         modeBase64ToImageBtn.classList.add("active");
 
         document.getElementById("leftTitle").textContent = "Base64 input";
-        document.getElementById("leftHint").textContent = "Paste Base64 string";
-        document.getElementById("rightTitle").textContent = "Image preview";
-        document.getElementById("rightHint").textContent = "Rendered from Base64";
+        document.getElementById("leftHint").textContent = "Paste Base64 to render image";
+
+        panelImageToBase64.classList.add("hidden");
+        panelBase64ToImage.classList.remove("hidden");
 
         optionsRow.classList.add("disabled");
         uploadArea.style.pointerEvents = "none";
         fileInput.disabled = true;
+
+        // reset image-side data
+        imageItems = [];
+        renderCards();
       }
     }
 
@@ -563,13 +594,12 @@
 
     setMode("imageToBase64");
 
-    // Upload area click
+    // Upload handlers
     uploadArea.addEventListener("click", () => {
       if (currentMode !== "imageToBase64") return;
       fileInput.click();
     });
 
-    // Drag & drop
     uploadArea.addEventListener("dragover", (e) => {
       if (currentMode !== "imageToBase64") return;
       e.preventDefault();
@@ -583,32 +613,18 @@
       }
     });
 
-    // File input change
     fileInput.addEventListener("change", () => {
       if (fileInput.files && fileInput.files.length > 0) {
         handleFiles(fileInput.files);
       }
     });
 
-    function resetThumbnails() {
-      previewDataUrls = [];
-      currentPreviewIndex = -1;
-      thumbsGrid.innerHTML = "";
-      thumbsPlaceholder.style.display = "block";
-      thumbsCountLabel.textContent = "";
-      thumbsWrapper.style.display = "none";
-    }
-
     function handleFiles(fileList) {
       leftError.textContent = "";
-      rightError.textContent = "";
-      textArea.value = "";
-
-      // reset preview + thumbs
+      rightErrorImg.textContent = "";
       previewImage.style.display = "none";
       previewImage.src = "";
       previewPlaceholder.style.display = "block";
-      resetThumbnails();
 
       const files = Array.from(fileList).filter((f) => {
         if (f.type && f.type.startsWith("image/")) return true;
@@ -618,12 +634,13 @@
 
       if (files.length === 0) {
         leftError.textContent = "Please select one or more valid image files.";
+        imageItems = [];
+        renderCards();
         return;
       }
 
       lastFiles = files;
-      previewDataUrls = new Array(files.length);
-      currentPreviewIndex = -1;
+      imageItems = [];
 
       if (files.length === 1) {
         previewPlaceholder.textContent = "Preview of: " + files[0].name;
@@ -631,63 +648,32 @@
         previewPlaceholder.textContent = `Multiple images selected (${files.length}). Previewing first one.`;
       }
 
-      thumbsWrapper.style.display = "block";
-      thumbsCountLabel.textContent = `${files.length} image${files.length > 1 ? "s" : ""}`;
-      thumbsPlaceholder.style.display = "block";
-
-      let output = "";
       let processedCount = 0;
 
       files.forEach((file, index) => {
         processSingleFile(file, (base64, dataUrl) => {
           if (base64 && dataUrl) {
-            // Base64 block
-            output += `// ${file.name}\n${base64}\n\n`;
-
-            // store preview dataUrl
-            previewDataUrls[index] = dataUrl;
-
-            // create thumb item
-            const thumbItem = document.createElement("div");
-            thumbItem.className = "thumb-item";
-            const img = document.createElement("img");
-            img.src = dataUrl;
-            img.alt = file.name;
-            thumbItem.appendChild(img);
-
-            thumbItem.addEventListener("click", () => {
-              setActivePreview(index);
+            imageItems.push({
+              index,
+              name: file.name,
+              base64,
+              dataUrl,
             });
-
-            thumbsGrid.appendChild(thumbItem);
-            thumbsPlaceholder.style.display = "none";
-
-            // set first preview
-            if (currentPreviewIndex === -1) {
-              setActivePreview(index);
-            }
           }
           processedCount++;
           if (processedCount === files.length) {
-            textArea.value = output.trim();
+            // sort by original order
+            imageItems.sort((a, b) => a.index - b.index);
+            renderCards();
+            // preview first image (if any)
+            if (imageItems.length > 0) {
+              currentImageDataUrl = imageItems[0].dataUrl;
+              previewImage.src = currentImageDataUrl;
+              previewImage.style.display = "block";
+              previewPlaceholder.style.display = "none";
+            }
           }
         });
-      });
-    }
-
-    function setActivePreview(index) {
-      if (!previewDataUrls[index]) return;
-      currentPreviewIndex = index;
-
-      currentImageDataUrl = previewDataUrls[index];
-      previewImage.src = currentImageDataUrl;
-      previewImage.style.display = "block";
-      previewPlaceholder.style.display = "none";
-
-      // update thumbs UI
-      Array.from(thumbsGrid.children).forEach((el, i) => {
-        if (i === index) el.classList.add("active");
-        else el.classList.remove("active");
       });
     }
 
@@ -745,6 +731,85 @@
       reader.readAsDataURL(file);
     }
 
+    function renderCards() {
+      cardsContainer.innerHTML = "";
+      rightErrorImg.textContent = "";
+
+      if (!imageItems || imageItems.length === 0) {
+        imagesSummaryText.textContent = "No images yet.";
+        downloadAllRow.classList.add("disabled");
+        return;
+      }
+
+      imagesSummaryText.textContent = `${imageItems.length} image${imageItems.length > 1 ? "s" : ""} converted.`;
+      downloadAllRow.classList.remove("disabled");
+
+      imageItems.forEach((item, idx) => {
+        const card = document.createElement("div");
+        card.className = "b64-card";
+
+        const header = document.createElement("div");
+        header.className = "b64-card-header";
+        const leftSpan = document.createElement("span");
+        leftSpan.textContent = `Image ${idx + 1} of ${imageItems.length}`;
+        const rightSpan = document.createElement("span");
+        rightSpan.innerHTML = `<strong>${item.name}</strong>`;
+        header.appendChild(leftSpan);
+        header.appendChild(rightSpan);
+
+        const textarea = document.createElement("textarea");
+        textarea.value = item.base64;
+
+        const buttonsRow = document.createElement("div");
+        buttonsRow.className = "b64-card-buttons";
+
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "btn small";
+        copyBtn.textContent = "Copy";
+        copyBtn.addEventListener("click", async () => {
+          if (!textarea.value.trim()) return;
+          try {
+            await navigator.clipboard.writeText(textarea.value.trim());
+            rightErrorImg.style.color = "#4ade80";
+            rightErrorImg.textContent = `Copied Base64 for ${item.name}`;
+            setTimeout(() => {
+              rightErrorImg.textContent = "";
+              rightErrorImg.style.color = "#f97373";
+            }, 1500);
+          } catch {
+            rightErrorImg.textContent = "Clipboard not available in this browser.";
+          }
+        });
+
+        const downloadBtn = document.createElement("button");
+        downloadBtn.className = "btn small";
+        downloadBtn.textContent = "Download .txt";
+        downloadBtn.addEventListener("click", () => {
+          if (!textarea.value.trim()) return;
+          const blob = new Blob([textarea.value.trim()], { type: "text/plain;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          const safeName = item.name.replace(/[^a-z0-9_\-\.]/gi, "_");
+          link.download = `${safeName || "image"}-base64.txt`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        });
+
+        buttonsRow.appendChild(copyBtn);
+        buttonsRow.appendChild(downloadBtn);
+
+        card.appendChild(header);
+        card.appendChild(textarea);
+        card.appendChild(buttonsRow);
+
+        cardsContainer.appendChild(card);
+      });
+    }
+
+    // Quality & format re-run conversion
     qualityRange.addEventListener("input", () => {
       qualityValue.textContent = qualityRange.value + "%";
       if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
@@ -758,78 +823,76 @@
       }
     });
 
-    copyBtn.addEventListener("click", async () => {
-      rightError.textContent = "";
-      if (!textArea.value.trim()) {
-        rightError.textContent =
-          currentMode === "imageToBase64"
-            ? "Nothing to copy. Please upload image(s) first."
-            : "Nothing to copy. Please paste Base64 or convert first.";
+    // Download all as .txt
+    downloadAllBtn.addEventListener("click", () => {
+      rightErrorImg.textContent = "";
+      if (!imageItems || imageItems.length === 0) {
+        rightErrorImg.textContent = "Nothing to download. Please upload image(s) first.";
         return;
       }
-      try {
-        await navigator.clipboard.writeText(textArea.value.trim());
-        rightError.style.color = "#4ade80";
-        rightError.textContent = "Copied to clipboard.";
-        setTimeout(() => {
-          rightError.textContent = "";
-          rightError.style.color = "#f97373";
-        }, 1500);
-      } catch (err) {
-        rightError.textContent = "Clipboard not available in this browser.";
-      }
+
+      let content = "";
+      imageItems.forEach((item) => {
+        content += `// ${item.name}\n${item.base64}\n\n`;
+      });
+      const blob = new Blob([content.trim()], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "images-base64.txt";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     });
 
+    // Clear (image→base64)
     clearBtn.addEventListener("click", () => {
-      textArea.value = "";
       leftError.textContent = "";
-      rightError.textContent = "";
+      rightErrorImg.textContent = "";
+      previewImage.style.display = "none";
+      previewImage.src = "";
+      previewPlaceholder.style.display = "block";
+      fileInput.value = "";
+      lastFiles = null;
+      imageItems = [];
+      renderCards();
+    });
+
+    // --- Base64 -> Image panel logic ---
+    singleClearBtn.addEventListener("click", () => {
+      singleBase64Input.value = "";
+      rightErrorB64.textContent = "";
       currentImageDataUrl = "";
       previewImage.src = "";
       previewImage.style.display = "none";
       previewPlaceholder.style.display = "block";
-      lastFiles = null;
-      resetThumbnails();
     });
 
-    downloadBtn.addEventListener("click", () => {
-      rightError.textContent = "";
-      if (currentMode === "imageToBase64") {
-        if (!textArea.value.trim()) {
-          rightError.textContent = "Nothing to download. Please upload image(s) first.";
-          return;
-        }
-        const blob = new Blob([textArea.value.trim()], { type: "text/plain;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "images-base64.txt";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      } else {
-        if (!currentImageDataUrl) {
-          rightError.textContent = "No image to download. Paste Base64 and convert first.";
-          return;
-        }
-        const link = document.createElement("a");
-        link.href = currentImageDataUrl;
-        link.download = "image-from-base64.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    singleCopyBtn.addEventListener("click", async () => {
+      rightErrorB64.textContent = "";
+      const val = singleBase64Input.value.trim();
+      if (!val) {
+        rightErrorB64.textContent = "Nothing to copy.";
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(val);
+        rightErrorB64.style.color = "#4ade80";
+        rightErrorB64.textContent = "Copied Base64.";
+        setTimeout(() => {
+          rightErrorB64.textContent = "";
+          rightErrorB64.style.color = "#f97373";
+        }, 1500);
+      } catch {
+        rightErrorB64.textContent = "Clipboard not available in this browser.";
       }
     });
 
-    // Base64 → Image mode
-    textArea.addEventListener("input", () => {
+    singleBase64Input.addEventListener("input", () => {
       if (currentMode !== "base64ToImage") return;
-
-      leftError.textContent = "";
-      rightError.textContent = "";
-
-      const value = textArea.value.trim();
+      const value = singleBase64Input.value.trim();
+      rightErrorB64.textContent = "";
       if (!value) {
         currentImageDataUrl = "";
         previewImage.src = "";
@@ -853,8 +916,22 @@
         previewImage.style.display = "block";
         previewPlaceholder.style.display = "none";
       } catch (err) {
-        rightError.textContent = "Invalid Base64 string.";
+        rightErrorB64.textContent = "Invalid Base64 string.";
       }
+    });
+
+    singleDownloadImageBtn.addEventListener("click", () => {
+      rightErrorB64.textContent = "";
+      if (!currentImageDataUrl) {
+        rightErrorB64.textContent = "No image to download. Paste valid Base64 first.";
+        return;
+      }
+      const link = document.createElement("a");
+      link.href = currentImageDataUrl;
+      link.download = "image-from-base64.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     });
   </script>
 </body>
