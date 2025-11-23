@@ -210,6 +210,50 @@
       display: none;
     }
 
+    .options-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .option {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .option label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    select,
+    input[type="range"] {
+      width: 100%;
+    }
+
+    select {
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.8);
+      background: rgba(15, 23, 42, 0.92);
+      color: var(--text);
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
+    }
+
+    input[type="range"] {
+      accent-color: var(--accent);
+    }
+
     textarea {
       width: 100%;
       min-height: 220px;
@@ -346,6 +390,11 @@
     .seo-section li {
       margin-bottom: 3px;
     }
+
+    .disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -376,15 +425,35 @@
       <!-- Left -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title" id="leftTitle">Upload image</div>
-          <div class="hint-label" id="leftHint">PNG / JPG / WEBP</div>
+          <div class="card-title" id="leftTitle">Upload image(s)</div>
+          <div class="hint-label" id="leftHint">Select one or multiple images</div>
         </div>
 
         <label class="upload-area" id="uploadArea">
-          <input type="file" id="fileInput" accept="image/*" />
-          <p><strong>Click to select an image</strong> or drop it here</p>
-          <span>Everything stays in your browser.</span>
+          <!-- multiple קיבלנו כאן -->
+          <input type="file" id="fileInput" accept="image/*" multiple />
+          <p><strong>Click to select image(s)</strong> or drop them here</p>
+          <span>Everything stays in your browser. No uploads.</span>
         </label>
+
+        <div class="options-row" id="optionsRow">
+          <div class="option">
+            <label for="formatSelect">Output format</label>
+            <select id="formatSelect">
+              <option value="original">Original (keep as-is)</option>
+              <option value="png">PNG (lossless)</option>
+              <option value="jpeg">JPEG (compressed)</option>
+              <option value="webp">WEBP (modern)</option>
+            </select>
+          </div>
+          <div class="option">
+            <label for="qualityRange">
+              Quality
+              <span id="qualityValue">90%</span>
+            </label>
+            <input type="range" id="qualityRange" min="10" max="100" value="90" />
+          </div>
+        </div>
 
         <div class="preview-wrapper">
           <div class="preview-placeholder" id="previewPlaceholder">
@@ -400,10 +469,10 @@
       <div class="card">
         <div class="card-header">
           <div class="card-title" id="rightTitle">Base64 output</div>
-          <div class="hint-label" id="rightHint">Copy or download</div>
+          <div class="hint-label" id="rightHint">One block per image</div>
         </div>
 
-        <textarea id="textArea" placeholder="Base64 will appear here..."></textarea>
+        <textarea id="textArea" placeholder="// my-image.png\nBASE64_STRING_HERE..."></textarea>
 
         <div class="buttons-row">
           <button class="btn small" id="clearBtn">Clear</button>
@@ -418,8 +487,9 @@
     <section class="seo-section">
       <h2>Online Image to Base64 &amp; Base64 to Image Converter</h2>
       <p>
-        This free tool lets you quickly convert images to Base64 strings, or paste an existing Base64 value and preview the image in your browser.
-        All conversions run locally in your browser using JavaScript – your files are never uploaded or stored on any server.
+        This free tool lets you quickly convert one or multiple images to Base64 strings, or paste an existing Base64 value
+        and preview the image in your browser. All conversions run locally in your browser using JavaScript – your files are
+        never uploaded or stored on any server.
       </p>
       <p>Common use cases:</p>
       <ul>
@@ -428,7 +498,8 @@
         <li>Generating inline images for emails, configuration files or testing.</li>
       </ul>
       <p>
-        The tool supports standard image formats like PNG, JPG and WEBP and works on both desktop and mobile browsers.
+        The tool supports standard image formats like PNG, JPG and WEBP and works on both desktop and mobile browsers. You can
+        select multiple images at once and get a clear Base64 block for each file, including the original filename as a comment.
       </p>
     </section>
 
@@ -460,8 +531,14 @@
     const copyBtn = document.getElementById("copyBtn");
     const downloadBtn = document.getElementById("downloadBtn");
 
+    const optionsRow = document.getElementById("optionsRow");
+    const formatSelect = document.getElementById("formatSelect");
+    const qualityRange = document.getElementById("qualityRange");
+    const qualityValue = document.getElementById("qualityValue");
+
     let currentMode = "imageToBase64";
     let currentImageDataUrl = "";
+    let lastFiles = null; // לשימוש חוזר כשמשנים פורמט/איכות
 
     function setMode(mode) {
       currentMode = mode;
@@ -477,13 +554,16 @@
         modeImageToBase64Btn.classList.add("active");
         modeBase64ToImageBtn.classList.remove("active");
 
-        leftTitle.textContent = "Upload image";
-        leftHint.textContent = "PNG / JPG / WEBP";
+        leftTitle.textContent = "Upload image(s)";
+        leftHint.textContent = "Select one or multiple images";
         rightTitle.textContent = "Base64 output";
-        rightHint.textContent = "Copy or download";
+        rightHint.textContent = "One block per image";
+
         fileInput.disabled = false;
         uploadArea.style.pointerEvents = "auto";
-        textArea.placeholder = "Base64 will appear here...";
+        optionsRow.classList.remove("disabled");
+
+        textArea.placeholder = "// my-image.png\nBASE64_STRING_HERE...";
         downloadBtn.textContent = "Download as .txt";
       } else {
         modeImageToBase64Btn.classList.remove("active");
@@ -493,8 +573,11 @@
         leftHint.textContent = "Paste your Base64 string";
         rightTitle.textContent = "Image preview";
         rightHint.textContent = "Download image";
+
         fileInput.disabled = true;
         uploadArea.style.pointerEvents = "none";
+        optionsRow.classList.add("disabled");
+
         previewPlaceholder.textContent = "Image will appear here after conversion.";
         textArea.placeholder = "Paste your Base64 string here...";
         downloadBtn.textContent = "Download image";
@@ -518,48 +601,153 @@
     uploadArea.addEventListener("drop", (e) => {
       if (currentMode !== "imageToBase64") return;
       e.preventDefault();
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        handleFile(e.dataTransfer.files[0]);
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        handleFiles(e.dataTransfer.files);
       }
     });
 
     fileInput.addEventListener("change", (e) => {
-      if (e.target.files && e.target.files[0]) {
-        handleFile(e.target.files[0]);
+      if (e.target.files && e.target.files.length > 0) {
+        handleFiles(e.target.files);
       }
     });
 
-    function handleFile(file) {
+    function handleFiles(fileList) {
       leftError.textContent = "";
       rightError.textContent = "";
+      textArea.value = "";
+      currentImageDataUrl = "";
+      previewImage.style.display = "none";
+      previewImage.src = "";
+      previewPlaceholder.style.display = "block";
+
+      const files = Array.from(fileList).filter((f) => f.type.startsWith("image/"));
+      if (files.length === 0) {
+        leftError.textContent = "Please select one or more valid image files.";
+        return;
+      }
+
+      lastFiles = files;
+
+      if (files.length === 1) {
+        previewPlaceholder.textContent = "Preview of: " + files[0].name;
+      } else {
+        previewPlaceholder.textContent = `Multiple images selected (${files.length}). Previewing first one.`;
+      }
+
+      // נבנה סטרינג תוצאה שמכיל בלוק לכל קובץ
+      let output = "";
+      let processedCount = 0;
+
+      files.forEach((file, index) => {
+        processSingleFile(file, index, files.length, (resultBase64, dataUrl) => {
+          if (!resultBase64) {
+            // במקרה של שגיאה – נקפוץ הלאה
+            processedCount++;
+            if (processedCount === files.length) {
+              textArea.value = output.trim();
+            }
+            return;
+          }
+
+          // מוסיפים בלוק מסודר
+          output += `// ${file.name}\n${resultBase64}\n\n`;
+
+          // נעשה פריוויו לפי הקובץ הראשון
+          if (index === 0 && dataUrl) {
+            currentImageDataUrl = dataUrl;
+            previewImage.src = dataUrl;
+            previewImage.style.display = "block";
+            previewPlaceholder.style.display = "none";
+          }
+
+          processedCount++;
+          if (processedCount === files.length) {
+            textArea.value = output.trim();
+          }
+        });
+      });
+    }
+
+    function processSingleFile(file, index, total, callback) {
+      // callback(base64String or null, dataUrl or null)
       if (!file.type.startsWith("image/")) {
-        leftError.textContent = "Please select a valid image file.";
+        callback(null, null);
         return;
       }
 
       const reader = new FileReader();
       reader.onload = function (event) {
-        const dataUrl = event.target.result;
-        currentImageDataUrl = dataUrl;
-        previewImage.src = dataUrl;
-        previewImage.style.display = "block";
-        previewPlaceholder.style.display = "none";
+        const originalDataUrl = event.target.result;
 
-        const base64String = dataUrl.split(",")[1] || "";
-        textArea.value = base64String;
+        const chosenFormat = formatSelect.value;
+        const quality = Number(qualityRange.value) / 100;
+
+        // אם המשתמש בחר "Original" – לא נשתמש בקאנבס, פשוט ניקח את ה-dataURL כמו שהוא
+        if (chosenFormat === "original") {
+          const base64String = (originalDataUrl.split(",")[1] || "").trim();
+          callback(base64String, originalDataUrl);
+          return;
+        }
+
+        // אחרת – ניצור תמונה וקאנבס לצורך המרה/דחיסה
+        const img = new Image();
+        img.onload = function () {
+          try {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+
+            let mime;
+            if (chosenFormat === "jpeg") mime = "image/jpeg";
+            else if (chosenFormat === "webp") mime = "image/webp";
+            else mime = "image/png";
+
+            const dataUrl = canvas.toDataURL(mime, quality);
+            const base64String = (dataUrl.split(",")[1] || "").trim();
+            callback(base64String, dataUrl);
+          } catch (err) {
+            leftError.textContent = "Failed to process image: " + file.name;
+            callback(null, null);
+          }
+        };
+        img.onerror = function () {
+          leftError.textContent = "Could not load image data for: " + file.name;
+          callback(null, null);
+        };
+        img.src = originalDataUrl;
       };
       reader.onerror = function () {
-        leftError.textContent = "Failed to read file. Please try again.";
+        leftError.textContent = "Failed to read file: " + file.name;
+        callback(null, null);
       };
       reader.readAsDataURL(file);
     }
 
+    // עדכון טקסט איכות והמרה מחדש אם יש כבר קבצים
+    qualityRange.addEventListener("input", () => {
+      qualityValue.textContent = qualityRange.value + "%";
+      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
+        handleFiles(lastFiles);
+      }
+    });
+
+    formatSelect.addEventListener("change", () => {
+      // אם הפורמט הוא original – האיכות פחות רלוונטית, אבל נשאיר אותו פעיל כדי לא לסבך
+      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
+        handleFiles(lastFiles);
+      }
+    });
+
     copyBtn.addEventListener("click", async () => {
       rightError.textContent = "";
       if (!textArea.value.trim()) {
-        rightError.textContent = currentMode === "imageToBase64"
-          ? "Nothing to copy. Please upload an image first."
-          : "Nothing to copy. Please paste Base64 or convert first.";
+        rightError.textContent =
+          currentMode === "imageToBase64"
+            ? "Nothing to copy. Please upload image(s) first."
+            : "Nothing to copy. Please paste Base64 or convert first.";
         return;
       }
       try {
@@ -583,20 +771,21 @@
       previewImage.src = "";
       previewImage.style.display = "none";
       previewPlaceholder.style.display = "block";
+      lastFiles = null;
     });
 
     downloadBtn.addEventListener("click", () => {
       rightError.textContent = "";
       if (currentMode === "imageToBase64") {
         if (!textArea.value.trim()) {
-          rightError.textContent = "Nothing to download. Please upload an image first.";
+          rightError.textContent = "Nothing to download. Please upload image(s) first.";
           return;
         }
         const blob = new Blob([textArea.value.trim()], { type: "text/plain;charset=utf-8" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "image-base64.txt";
+        link.download = "images-base64.txt";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -628,6 +817,7 @@
           return;
         }
 
+        // ננסה לקחת רק את ה-base64 עצמו
         let base64 = value;
         if (base64.startsWith("data:")) {
           const commaIndex = base64.indexOf(",");
