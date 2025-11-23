@@ -137,10 +137,7 @@
       transform: translateY(-1px);
     }
 
-    .mode-button span.icon {
-      font-size: 1.0rem;
-    }
-
+    /* layout */
     .grid {
       display: grid;
       grid-template-columns: 1.1fr 1.1fr;
@@ -170,16 +167,6 @@
       gap: 10px;
     }
 
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    .hint-label {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
     .upload-area {
       border-radius: 12px;
       border: 1px dashed rgba(148, 163, 184, 0.7);
@@ -196,20 +183,6 @@
       transform: translateY(-1px);
     }
 
-    .upload-area p {
-      margin: 4px 0;
-      font-size: 0.86rem;
-    }
-
-    .upload-area span {
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-
-    input[type="file"] {
-      display: none;
-    }
-
     .options-row {
       display: flex;
       flex-wrap: wrap;
@@ -218,40 +191,9 @@
       margin-bottom: 4px;
     }
 
-    .option {
-      flex: 1;
-      min-width: 150px;
-    }
-
-    .option label {
-      display: block;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
     select,
     input[type="range"] {
       width: 100%;
-    }
-
-    select {
-      border-radius: 999px;
-      border: 1px solid rgba(75, 85, 99, 0.8);
-      background: rgba(15, 23, 42, 0.92);
-      color: var(--text);
-      padding: 4px 10px;
-      font-size: 0.8rem;
-      outline: none;
-    }
-
-    select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
-    }
-
-    input[type="range"] {
-      accent-color: var(--accent);
     }
 
     textarea {
@@ -265,12 +207,6 @@
       padding: 10px 11px;
       font-size: 0.8rem;
       resize: vertical;
-      outline: none;
-    }
-
-    textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
     }
 
     .preview-wrapper {
@@ -282,7 +218,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
     }
 
     .preview-wrapper img {
@@ -292,103 +227,10 @@
       object-fit: contain;
     }
 
-    .preview-placeholder {
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .buttons-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: flex-end;
-      margin-top: 6px;
-    }
-
-    .btn {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: rgba(15, 23, 42, 1);
-      padding: 6px 12px;
-      font-size: 0.8rem;
-      color: var(--text);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.15s ease, border-color 0.15s ease, transform 0.06s ease;
-    }
-
-    .btn.primary {
-      background: linear-gradient(135deg, #0ea5e9, #22c55e);
-      border-color: rgba(34, 197, 94, 0.6);
-      color: #0b1120;
-      font-weight: 600;
-    }
-
-    .btn.small {
-      padding: 4px 9px;
-      font-size: 0.76rem;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      border-color: var(--accent);
-    }
-
-    .btn.primary:hover {
-      filter: brightness(1.05);
-    }
-
     .error-text {
       color: var(--danger);
       font-size: 0.8rem;
-      margin-top: 4px;
       min-height: 1em;
-    }
-
-    .footer {
-      margin-top: 18px;
-      font-size: 0.75rem;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .footer a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .seo-section {
-      margin-top: 24px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(75, 85, 99, 0.7);
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .seo-section h2 {
-      font-size: 1rem;
-      margin: 0 0 8px 0;
-      color: #e5e7eb;
-    }
-
-    .seo-section p {
-      margin: 4px 0;
-    }
-
-    .seo-section ul {
-      margin: 6px 0 0 18px;
-      padding: 0;
-    }
-
-    .seo-section li {
-      margin-bottom: 3px;
     }
 
     .disabled {
@@ -397,8 +239,10 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
+
     <header class="header">
       <div class="title-row">
         <h1>
@@ -408,187 +252,143 @@
         <span class="pill-badge">No upload • All in your browser</span>
       </div>
       <p class="subtitle">
-        Convert images to Base64 or Base64 back to images. Fast, private, and runs entirely in your browser – no files are sent to any server.
+        Convert images to Base64 or Base64 to images. Everything is processed locally.
       </p>
     </header>
 
     <div class="mode-toggle">
-      <button class="mode-button active" id="modeImageToBase64">
-        <span class="icon">🖼️</span> Image → Base64
-      </button>
-      <button class="mode-button" id="modeBase64ToImage">
-        <span class="icon">🔡</span> Base64 → Image
-      </button>
+      <button class="mode-button active" id="modeImageToBase64">🖼️ Image → Base64</button>
+      <button class="mode-button" id="modeBase64ToImage">🔡 Base64 → Image</button>
     </div>
 
     <div class="grid">
-      <!-- Left -->
+      <!-- Left side -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title" id="leftTitle">Upload image(s)</div>
-          <div class="hint-label" id="leftHint">Select one or multiple images</div>
+          <div id="leftTitle">Upload image(s)</div>
+          <div id="leftHint">Select one or multiple images</div>
         </div>
 
-        <label class="upload-area" id="uploadArea">
-          <input type="file" id="fileInput" accept="image/*" multiple />
-          <p><strong>Click to select image(s)</strong> or drop them here</p>
-          <span>Everything stays in your browser. No uploads.</span>
+        <!-- Upload area -->
+        <label class="upload-area" for="fileInput" id="uploadArea">
+          <p><strong>Click to select image(s)</strong> or drop them</p>
         </label>
 
+        <!-- Hidden input (fix for double-opening on mobile) -->
+        <input type="file" id="fileInput" accept="image/*" multiple style="display:none;" />
+
+        <!-- Format + quality -->
         <div class="options-row" id="optionsRow">
           <div class="option">
-            <label for="formatSelect">Output format</label>
+            <label>Output format</label>
             <select id="formatSelect">
-              <option value="original">Original (keep as-is)</option>
-              <option value="png">PNG (lossless)</option>
-              <option value="jpeg">JPEG (compressed)</option>
-              <option value="webp">WEBP (modern)</option>
+              <option value="original">Original</option>
+              <option value="png">PNG</option>
+              <option value="jpeg">JPG</option>
+              <option value="webp">WEBP</option>
             </select>
           </div>
+
           <div class="option">
-            <label for="qualityRange">
-              Quality
-              <span id="qualityValue">90%</span>
-            </label>
+            <label>Quality <span id="qualityValue">90%</span></label>
             <input type="range" id="qualityRange" min="10" max="100" value="90" />
           </div>
         </div>
 
         <div class="preview-wrapper">
-          <div class="preview-placeholder" id="previewPlaceholder">
-            No image selected yet.
-          </div>
-          <img id="previewImage" src="" alt="Preview" style="display:none;" />
+          <div id="previewPlaceholder">No image selected yet.</div>
+          <img id="previewImage" style="display:none;" />
         </div>
 
         <div class="error-text" id="leftError"></div>
       </div>
 
-      <!-- Right -->
+      <!-- Right side -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title" id="rightTitle">Base64 output</div>
-          <div class="hint-label" id="rightHint">One block per image</div>
+          <div id="rightTitle">Base64 output</div>
+          <div id="rightHint">One block per image</div>
         </div>
 
-        <textarea id="textArea" placeholder="// my-image.png\nBASE64_STRING_HERE..."></textarea>
+        <textarea id="textArea"></textarea>
 
-        <div class="buttons-row">
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
           <button class="btn small" id="clearBtn">Clear</button>
           <button class="btn small" id="copyBtn">Copy</button>
-          <button class="btn primary small" id="downloadBtn">Download as .txt</button>
+          <button class="btn primary small" id="downloadBtn">Download</button>
         </div>
 
         <div class="error-text" id="rightError"></div>
       </div>
     </div>
-
-    <section class="seo-section">
-      <h2>Online Image to Base64 &amp; Base64 to Image Converter</h2>
-      <p>
-        This free tool lets you quickly convert one or multiple images to Base64 strings, or paste an existing Base64 value
-        and preview the image in your browser. All conversions run locally in your browser using JavaScript – your files are
-        never uploaded or stored on any server.
-      </p>
-      <p>Common use cases:</p>
-      <ul>
-        <li>Embedding small images directly in HTML, CSS or JSON as Base64.</li>
-        <li>Debugging frontend or backend code that works with Base64-encoded images.</li>
-        <li>Generating inline images for emails, configuration files or testing.</li>
-      </ul>
-      <p>
-        The tool supports standard image formats like PNG, JPG and WEBP and works on both desktop and mobile browsers. You can
-        select multiple images at once and get a clear Base64 block for each file, including the original filename as a comment.
-      </p>
-    </section>
-
-    <footer class="footer">
-      <span>Tip: You can paste Base64 with or without <code>data:image/...;base64,</code>.</span>
-      <span>Built as a tiny developer utility.</span>
-    </footer>
   </div>
 
   <script>
-    const modeImageToBase64Btn = document.getElementById("modeImageToBase64");
-    const modeBase64ToImageBtn = document.getElementById("modeBase64ToImage");
-
-    const leftTitle = document.getElementById("leftTitle");
-    const leftHint = document.getElementById("leftHint");
-    const rightTitle = document.getElementById("rightTitle");
-    const rightHint = document.getElementById("rightHint");
-
-    const uploadArea = document.getElementById("uploadArea");
+    //-----------------------------------------------------------------
+    // Elements
+    //-----------------------------------------------------------------
     const fileInput = document.getElementById("fileInput");
+    const uploadArea = document.getElementById("uploadArea");
     const previewImage = document.getElementById("previewImage");
     const previewPlaceholder = document.getElementById("previewPlaceholder");
-
-    const textArea = document.getElementById("textArea");
     const leftError = document.getElementById("leftError");
     const rightError = document.getElementById("rightError");
-
-    const clearBtn = document.getElementById("clearBtn");
-    const copyBtn = document.getElementById("copyBtn");
-    const downloadBtn = document.getElementById("downloadBtn");
-
-    const optionsRow = document.getElementById("optionsRow");
+    const textArea = document.getElementById("textArea");
     const formatSelect = document.getElementById("formatSelect");
     const qualityRange = document.getElementById("qualityRange");
     const qualityValue = document.getElementById("qualityValue");
 
+    let lastFiles = null;
     let currentMode = "imageToBase64";
     let currentImageDataUrl = "";
-    let lastFiles = null;
+
+    //-----------------------------------------------------------------
+    // Mode switching
+    //-----------------------------------------------------------------
+    document.getElementById("modeImageToBase64").onclick = () => setMode("imageToBase64");
+    document.getElementById("modeBase64ToImage").onclick = () => setMode("base64ToImage");
 
     function setMode(mode) {
       currentMode = mode;
-      leftError.textContent = "";
-      rightError.textContent = "";
       textArea.value = "";
-      currentImageDataUrl = "";
       previewImage.style.display = "none";
-      previewImage.src = "";
       previewPlaceholder.style.display = "block";
 
       if (mode === "imageToBase64") {
-        modeImageToBase64Btn.classList.add("active");
-        modeBase64ToImageBtn.classList.remove("active");
+        document.getElementById("modeImageToBase64").classList.add("active");
+        document.getElementById("modeBase64ToImage").classList.remove("active");
 
-        leftTitle.textContent = "Upload image(s)";
-        leftHint.textContent = "Select one or multiple images";
-        rightTitle.textContent = "Base64 output";
-        rightHint.textContent = "One block per image";
+        document.getElementById("leftTitle").textContent = "Upload image(s)";
+        document.getElementById("leftHint").textContent = "Select one or multiple images";
+        document.getElementById("rightTitle").textContent = "Base64 output";
+        document.getElementById("rightHint").textContent = "One block per image";
 
+        document.getElementById("optionsRow").classList.remove("disabled");
         fileInput.disabled = false;
         uploadArea.style.pointerEvents = "auto";
-        optionsRow.classList.remove("disabled");
-
-        textArea.placeholder = "// my-image.png\nBASE64_STRING_HERE...";
-        downloadBtn.textContent = "Download as .txt";
       } else {
-        modeImageToBase64Btn.classList.remove("active");
-        modeBase64ToImageBtn.classList.add("active");
+        document.getElementById("modeImageToBase64").classList.remove("active");
+        document.getElementById("modeBase64ToImage").classList.add("active");
 
-        leftTitle.textContent = "Base64 input";
-        leftHint.textContent = "Paste your Base64 string";
-        rightTitle.textContent = "Image preview";
-        rightHint.textContent = "Download image";
+        document.getElementById("leftTitle").textContent = "Base64 input";
+        document.getElementById("leftHint").textContent = "Paste Base64";
+        document.getElementById("rightTitle").textContent = "Image preview";
+        document.getElementById("rightHint").textContent = "Rendered image";
 
+        document.getElementById("optionsRow").classList.add("disabled");
         fileInput.disabled = true;
         uploadArea.style.pointerEvents = "none";
-        optionsRow.classList.add("disabled");
-
-        previewPlaceholder.textContent = "Image will appear here after conversion.";
-        textArea.placeholder = "Paste your Base64 string here...";
-        downloadBtn.textContent = "Download image";
       }
     }
 
-    modeImageToBase64Btn.addEventListener("click", () => setMode("imageToBase64"));
-    modeBase64ToImageBtn.addEventListener("click", () => setMode("base64ToImage"));
+    setMode("imageToBase64");
 
-    uploadArea.addEventListener("click", () => {
-      if (currentMode === "imageToBase64") {
-        fileInput.click();
+    //-----------------------------------------------------------------
+    // Upload handler
+    //-----------------------------------------------------------------
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files.length > 0) {
+        handleFiles(fileInput.files);
       }
     });
 
@@ -600,90 +400,78 @@
     uploadArea.addEventListener("drop", (e) => {
       if (currentMode !== "imageToBase64") return;
       e.preventDefault();
-      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      if (e.dataTransfer.files.length > 0) {
         handleFiles(e.dataTransfer.files);
       }
     });
 
-    fileInput.addEventListener("change", (e) => {
-      if (e.target.files && e.target.files.length > 0) {
-        handleFiles(e.target.files);
-      }
-    });
-
+    //-----------------------------------------------------------------
+    // File Processing
+    //-----------------------------------------------------------------
     function handleFiles(fileList) {
       leftError.textContent = "";
       rightError.textContent = "";
       textArea.value = "";
-      currentImageDataUrl = "";
-      previewImage.style.display = "none";
-      previewImage.src = "";
-      previewPlaceholder.style.display = "block";
 
       const files = Array.from(fileList).filter((f) => {
         if (f.type && f.type.startsWith("image/")) return true;
-        const name = (f.name || "").toLowerCase();
-        return name.match(/\.(png|jpe?g|webp|gif|bmp)$/i);
+        return /\.(png|jpe?g|webp|gif|bmp)$/i.test(f.name);
       });
 
       if (files.length === 0) {
-        leftError.textContent = "Please select one or more valid image files.";
+        leftError.textContent = "Invalid image file.";
         return;
       }
 
       lastFiles = files;
-
-      if (files.length === 1) {
-        previewPlaceholder.textContent = "Preview of: " + files[0].name;
-      } else {
-        previewPlaceholder.textContent = `Multiple images selected (${files.length}). Previewing first one.`;
-      }
-
       let output = "";
-      let processedCount = 0;
+      let count = 0;
 
       files.forEach((file, index) => {
-        processSingleFile(file, index, files.length, (resultBase64, dataUrl) => {
-          if (resultBase64) {
-            output += `// ${file.name}\n${resultBase64}\n\n`;
-            if (index === 0 && dataUrl) {
-              currentImageDataUrl = dataUrl;
-              previewImage.src = dataUrl;
-              previewImage.style.display = "block";
-              previewPlaceholder.style.display = "none";
-            }
+        processFile(file, (base64, dataUrl) => {
+          if (base64)
+            output += `// ${file.name}\n${base64}\n\n`;
+
+          // Show preview for 1st file
+          if (index === 0 && dataUrl) {
+            previewImage.src = dataUrl;
+            previewImage.style.display = "block";
+            previewPlaceholder.style.display = "none";
           }
-          processedCount++;
-          if (processedCount === files.length) {
+
+          count++;
+          if (count === files.length) {
             textArea.value = output.trim();
           }
         });
       });
     }
 
-    function processSingleFile(file, index, total, callback) {
-      const isImageByType = file.type && file.type.startsWith("image/");
-      const isImageByName = (file.name || "").toLowerCase().match(/\.(png|jpe?g|webp|gif|bmp)$/i);
-      if (!isImageByType && !isImageByName) {
+    //-----------------------------------------------------------------
+    // Convert single file
+    //-----------------------------------------------------------------
+    function processFile(file, callback) {
+      const isImage = (file.type && file.type.startsWith("image/")) ||
+        /\.(png|jpe?g|webp|gif|bmp)$/i.test(file.name);
+
+      if (!isImage) {
         callback(null, null);
         return;
       }
 
       const reader = new FileReader();
-      reader.onload = function (event) {
-        const originalDataUrl = event.target.result;
+      reader.onload = (e) => {
+        const original = e.target.result;
+        const format = formatSelect.value;
+        const quality = qualityRange.value / 100;
 
-        const chosenFormat = formatSelect.value;
-        const quality = Number(qualityRange.value) / 100;
-
-        if (chosenFormat === "original") {
-          const base64String = (originalDataUrl.split(",")[1] || "").trim();
-          callback(base64String, originalDataUrl);
+        if (format === "original") {
+          callback(original.split(",")[1], original);
           return;
         }
 
         const img = new Image();
-        img.onload = function () {
+        img.onload = () => {
           try {
             const canvas = document.createElement("canvas");
             canvas.width = img.width;
@@ -691,142 +479,78 @@
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
 
-            let mime;
-            if (chosenFormat === "jpeg") mime = "image/jpeg";
-            else if (chosenFormat === "webp") mime = "image/webp";
-            else mime = "image/png";
+            let mime = "image/png";
+            if (format === "jpeg") mime = "image/jpeg";
+            else if (format === "webp") mime = "image/webp";
 
             const dataUrl = canvas.toDataURL(mime, quality);
-            const base64String = (dataUrl.split(",")[1] || "").trim();
-            callback(base64String, dataUrl);
-          } catch (err) {
-            leftError.textContent = "Failed to process image: " + file.name;
+            callback(dataUrl.split(",")[1], dataUrl);
+          } catch {
             callback(null, null);
           }
         };
-        img.onerror = function () {
-          leftError.textContent = "Could not load image data for: " + file.name;
-          callback(null, null);
-        };
-        img.src = originalDataUrl;
+        img.src = original;
       };
-      reader.onerror = function () {
-        leftError.textContent = "Failed to read file: " + file.name;
-        callback(null, null);
-      };
+
       reader.readAsDataURL(file);
     }
 
-    qualityRange.addEventListener("input", () => {
+    //-----------------------------------------------------------------
+    // Quality + Format Change
+    //-----------------------------------------------------------------
+    qualityRange.oninput = () => {
       qualityValue.textContent = qualityRange.value + "%";
-      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
-        handleFiles(lastFiles);
-      }
-    });
+      if (lastFiles) handleFiles(lastFiles);
+    };
 
-    formatSelect.addEventListener("change", () => {
-      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
-        handleFiles(lastFiles);
-      }
-    });
+    formatSelect.onchange = () => {
+      if (lastFiles) handleFiles(lastFiles);
+    };
 
-    copyBtn.addEventListener("click", async () => {
-      rightError.textContent = "";
-      if (!textArea.value.trim()) {
-        rightError.textContent =
-          currentMode === "imageToBase64"
-            ? "Nothing to copy. Please upload image(s) first."
-            : "Nothing to copy. Please paste Base64 or convert first.";
-        return;
-      }
+    //-----------------------------------------------------------------
+    // Copy
+    //-----------------------------------------------------------------
+    document.getElementById("copyBtn").onclick = async () => {
+      if (!textArea.value.trim()) return;
+
       try {
-        await navigator.clipboard.writeText(textArea.value.trim());
+        await navigator.clipboard.writeText(textArea.value);
         rightError.style.color = "#4ade80";
-        rightError.textContent = "Copied to clipboard.";
-        setTimeout(() => {
-          rightError.textContent = "";
-          rightError.style.color = "#f97373";
-        }, 1500);
-      } catch (err) {
-        rightError.textContent = "Clipboard not available in this browser.";
+        rightError.textContent = "Copied!";
+        setTimeout(() => (rightError.textContent = ""), 1200);
+      } catch {
+        rightError.textContent = "Clipboard blocked.";
       }
-    });
+    };
 
-    clearBtn.addEventListener("click", () => {
+    //-----------------------------------------------------------------
+    // Clear
+    //-----------------------------------------------------------------
+    document.getElementById("clearBtn").onclick = () => {
       textArea.value = "";
-      leftError.textContent = "";
-      rightError.textContent = "";
-      currentImageDataUrl = "";
-      previewImage.src = "";
       previewImage.style.display = "none";
       previewPlaceholder.style.display = "block";
-      lastFiles = null;
-    });
-
-    downloadBtn.addEventListener("click", () => {
+      leftError.textContent = "";
       rightError.textContent = "";
-      if (currentMode === "imageToBase64") {
-        if (!textArea.value.trim()) {
-          rightError.textContent = "Nothing to download. Please upload image(s) first.";
-          return;
-        }
-        const blob = new Blob([textArea.value.trim()], { type: "text/plain;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "images-base64.txt";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      } else {
-        if (!currentImageDataUrl) {
-          rightError.textContent = "No image to download. Paste Base64 and convert first.";
-          return;
-        }
-        const link = document.createElement("a");
-        link.href = currentImageDataUrl;
-        link.download = "image-from-base64.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    });
+      lastFiles = null;
+    };
 
-    textArea.addEventListener("input", () => {
-      if (currentMode === "base64ToImage") {
-        leftError.textContent = "";
-        rightError.textContent = "";
-        const value = textArea.value.trim();
-        if (!value) {
-          currentImageDataUrl = "";
-          previewImage.src = "";
-          previewImage.style.display = "none";
-          previewPlaceholder.style.display = "block";
-          return;
-        }
+    //-----------------------------------------------------------------
+    // Download
+    //-----------------------------------------------------------------
+    document.getElementById("downloadBtn").onclick = () => {
+      if (!textArea.value.trim()) return;
 
-        let base64 = value;
-        if (base64.startsWith("data:")) {
-          const commaIndex = base64.indexOf(",");
-          if (commaIndex !== -1) {
-            base64 = base64.slice(commaIndex + 1);
-          }
-        }
+      const blob = new Blob([textArea.value], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
 
-        try {
-          const dataUrl = "data:image/png;base64," + base64;
-          currentImageDataUrl = dataUrl;
-          previewImage.src = dataUrl;
-          previewImage.style.display = "block";
-          previewPlaceholder.style.display = "none";
-        } catch (err) {
-          rightError.textContent = "Invalid Base64 string.";
-        }
-      }
-    });
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "images-base64.txt";
+      a.click();
 
-    setMode("imageToBase64");
+      URL.revokeObjectURL(url);
+    };
   </script>
 </body>
 </html>
