@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Image ⇆ Base64 Converter – Online Tool</title>
+  <title>Image to Base64 & Base64 to Image Converter Online - No Upload, Resize & Watermark</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Free online Image to Base64 and Base64 to Image converter. Fast, secure and runs fully in your browser – no files are uploaded to any server."
+    content="Free online Image to Base64 and Base64 to Image converter. Fast, secure and runs fully in your browser – no files are uploaded to any server. Includes resize, quality control, and watermark options."
   />
   <style>
     :root {
@@ -575,8 +575,8 @@
 
     .b64-card textarea {
       width: 100%;
-      min-height: 90px;
-      max-height: 140px;
+      min-height: 120px; /* Enhanced height for better viewing */
+      max-height: 200px; /* Enhanced max-height */
       border-radius: 10px;
       border: 1px solid rgba(55, 65, 81, 0.9);
       background: rgba(15, 23, 42, 0.95);
@@ -616,8 +616,8 @@
 
     .single-b64-textarea {
       width: 100%;
-      min-height: 120px;
-      max-height: 260px;
+      min-height: 180px; /* Enhanced height for Base64 input */
+      max-height: 400px; /* Enhanced max-height */
       border-radius: 12px;
       border: 1px solid rgba(75, 85, 99, 0.8);
       background: rgba(15, 23, 42, 0.92);
@@ -732,7 +732,6 @@
         <span>Copy & download friendly outputs</span>
       </div>
 
-      <!-- WAITLIST BLOCK -->
       <div class="waitlist-wrapper">
         <div class="waitlist-text">
           <strong>Pro version is coming soon.</strong><br />
@@ -746,7 +745,8 @@
         >
           <input type="hidden" name="_subject" value="Image2Base64 Pro – Waitlist signup" />
           <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" 
+          name="_template" value="table" />
           <input
             type="email"
             name="email"
@@ -754,11 +754,13 @@
             placeholder="Enter your email for early access"
             required
           />
-          <button class="btn primary small" type="submit">Join waitlist</button>
+          <button class="btn primary 
+          small" type="submit">Join waitlist</button>
         </form>
       </div>
       <div class="waitlist-small">
-        Free forever for basic use. Pro will be optional for power users only.
+        Free forever for basic use.
+        Pro will be optional for power users only.
       </div>
     </header>
 
@@ -768,18 +770,19 @@
     </div>
 
     <div class="grid">
-      <!-- LEFT CARD -->
       <div class="card">
         <div class="card-header">
           <div id="leftTitle">Upload image(s)</div>
-          <small id="leftHint">Select one or multiple images</small>
+          <small id="leftHint">Select one or 
+          multiple images</small>
         </div>
 
         <div class="upload-area" id="uploadArea">
           <p><strong>Click to select image(s)</strong> or drop them here</p>
         </div>
 
-        <input type="file" id="fileInput" accept="image/*,.svg,.svgz" multiple style="display:none;" />
+        <input type="file" id="fileInput" accept="image/*,.svg,.svgz" multiple style="display:none;"
+        />
 
         <div class="options-row" id="optionsRow">
           <div class="option">
@@ -796,9 +799,14 @@
             <label for="qualityRange">
               Quality <span id="qualityValue">90%</span>
             </label>
-            <input type="range" id="qualityRange" min="10" max="100" value="90" />
+            <input type="range" id="qualityRange" min="10" max="100" value="90" 
+            />
           </div>
-
+          
+          <div class="option" style="min-width: 150px; display: flex; align-items: flex-end; padding-bottom: 4px;">
+            <input type="checkbox" id="base64OnlyCheckbox" style="margin-right: 8px; transform: scale(1.15); accent-color: var(--accent);" />
+            <label for="base64OnlyCheckbox" style="margin-bottom: 0; font-size: 0.86rem; color: var(--text);">Base64 Only</label>
+          </div>
           <div class="advanced-toggle">
             <button class="btn small" id="toggleAdvancedBtn" type="button">More options</button>
           </div>
@@ -816,7 +824,8 @@
           </div>
           <div class="option">
             <label>Width / height (px)</label>
-            <div style="display:flex; gap:6px;">
+            <div style="display:flex;
+            gap:6px;">
               <input type="number" id="resizeWidth" class="advanced-small-input" placeholder="Width" min="1" />
               <input type="number" id="resizeHeight" class="advanced-small-input" placeholder="Height" min="1" />
             </div>
@@ -827,7 +836,8 @@
               type="text"
               id="watermarkText"
               class="advanced-small-input"
-              placeholder="e.g. yakirpinchas.github.io/image2base64"
+              placeholder="e.g.
+              yakirpinchas.github.io/image2base64"
             />
           </div>
         </div>
@@ -837,7 +847,6 @@
           <img id="previewImage" alt="Preview" style="display:none;" />
         </div>
 
-        <!-- Thumbnails -->
         <div class="thumbs-wrapper" id="thumbsWrapper">
           <div class="thumbs-header">
             <span>Thumbnails</span>
@@ -852,9 +861,7 @@
         <div class="error-text" id="leftError"></div>
       </div>
 
-      <!-- RIGHT CARD -->
       <div class="card">
-        <!-- Image → Base64 -->
         <div id="panelImageToBase64">
           <div class="card-header">
             <div>Base64 output (per image)</div>
@@ -865,7 +872,8 @@
 
           <div class="download-all-row" id="downloadAllRow">
             <span id="imagesSummaryText">No images yet.</span>
-            <div style="display:flex; gap:6px;">
+            <div style="display:flex;
+            gap:6px;">
               <button class="btn small" id="copyAllBtn">Copy all</button>
               <button class="btn small" id="downloadAllBtn">Download all as .txt</button>
             </div>
@@ -874,7 +882,6 @@
           <div class="error-text" id="rightErrorImg"></div>
         </div>
 
-        <!-- Base64 → Image -->
         <div id="panelBase64ToImage" class="hidden">
           <div class="card-header">
             <div>Base64 input</div>
@@ -884,15 +891,16 @@
           <textarea
             id="singleBase64Input"
             class="single-b64-textarea"
-            placeholder="Paste your Base64 string here (with or without data:image/...;base64,)"></textarea>
+            placeholder="Paste your Base64 
+            string here (with or without data:image/...;base64,)"></textarea>
 
           <div class="preview-wrapper" id="previewWrapperB64">
             <div class="preview-placeholder" id="previewPlaceholderB64">
               Image preview will appear here.
             </div>
-            <img id="previewImageB64" alt="Preview from Base64" style="display:none;" />
+            <img id="previewImageB64" alt="Preview from Base64" style="display:none;"
+            />
           </div>
-
           <div class="b64-info" id="b64InfoText"></div>
 
           <div class="buttons-row">
@@ -906,7 +914,6 @@
       </div>
     </div>
 
-    <!-- PRO COMING SOON SECTION -->
     <section class="pro-section">
       <div class="pro-main">
         <div class="pro-main-title">Image2Base64 Pro (coming soon)</div>
@@ -929,51 +936,63 @@
         </button>
       </div>
     </section>
-
+    
+    <div class="seo-text" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(55, 65, 81, 0.7);">
+      <h2 style="font-size: 1.2rem; color: var(--accent); margin-bottom: 8px;">What is Base64 and Why Convert Images?</h2>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; line-height: 1.5;">
+        Base64 is a binary-to-text encoding scheme that converts binary data (like images) into a sequence of ASCII characters.
+        This is commonly used in web development and programming to embed image data directly into files like HTML, CSS, or JSON,
+        avoiding external HTTP requests. Converting small icons or design elements to Base64 speeds up website loading times by
+        reducing the number of server calls. Our **free Image to Base64 Converter** is fast and secure because **all processing is done
+        locally in your browser**, ensuring your files are never uploaded to any server.
+      </p>
+      <h3 style="font-size: 1rem; color: var(--muted); margin-bottom: 6px;">Key Benefits for Developers & Designers</h3>
+      <ul style="font-size: 0.8rem; color: var(--muted); padding-left: 20px; margin-top: 0; line-height: 1.5;">
+        <li>**Performance:** Embed small images directly into stylesheets to eliminate HTTP requests and improve load time.</li>
+        <li>**Advanced Features:** Utilize built-in tools for **resizing**, **quality control**, and **watermarking** before conversion.</li>
+        <li>**Privacy:** Enjoy maximum security with our "No Upload" guarantee for all conversions.</li>
+        <li>**Multi-Image Support:** Easily convert multiple files in a single batch, and copy or download all results at once.</li>
+      </ul>
+    </div>
     <footer>
       <span>Runs fully in your browser – no files are uploaded.</span>
-      <span>Made with ❤️ by Yakir. Feedback is always welcome.</span>
+      <span>Made with ❤️ by Yakir.
+      Feedback is always welcome.</span>
     </footer>
   </div>
 
   <script>
     const modeImageToBase64Btn = document.getElementById("modeImageToBase64");
     const modeBase64ToImageBtn = document.getElementById("modeBase64ToImage");
-
     const uploadArea = document.getElementById("uploadArea");
     const fileInput = document.getElementById("fileInput");
     const previewImage = document.getElementById("previewImage");
     const previewPlaceholder = document.getElementById("previewPlaceholder");
-
     const thumbsWrapper = document.getElementById("thumbsWrapper");
     const thumbsGrid = document.getElementById("thumbsGrid");
     const thumbsPlaceholder = document.getElementById("thumbsPlaceholder");
     const thumbsCountLabel = document.getElementById("thumbsCountLabel");
-
     const leftError = document.getElementById("leftError");
-
     const formatSelect = document.getElementById("formatSelect");
     const qualityRange = document.getElementById("qualityRange");
     const qualityValue = document.getElementById("qualityValue");
+    // Change 5: Base64 Only Checkbox Variable
+    const base64OnlyCheckbox = document.getElementById("base64OnlyCheckbox"); 
     const optionsRow = document.getElementById("optionsRow");
-
     const toggleAdvancedBtn = document.getElementById("toggleAdvancedBtn");
     const advancedOptions = document.getElementById("advancedOptions");
     const resizeModeSelect = document.getElementById("resizeMode");
     const resizeWidthInput = document.getElementById("resizeWidth");
     const resizeHeightInput = document.getElementById("resizeHeight");
     const watermarkTextInput = document.getElementById("watermarkText");
-
     const panelImageToBase64 = document.getElementById("panelImageToBase64");
     const panelBase64ToImage = document.getElementById("panelBase64ToImage");
-
     const cardsContainer = document.getElementById("cardsContainer");
     const downloadAllRow = document.getElementById("downloadAllRow");
     const downloadAllBtn = document.getElementById("downloadAllBtn");
     const copyAllBtn = document.getElementById("copyAllBtn");
     const imagesSummaryText = document.getElementById("imagesSummaryText");
     const rightErrorImg = document.getElementById("rightErrorImg");
-
     const singleBase64Input = document.getElementById("singleBase64Input");
     const previewImageB64 = document.getElementById("previewImageB64");
     const previewPlaceholderB64 = document.getElementById("previewPlaceholderB64");
@@ -986,7 +1005,7 @@
     let currentMode = "imageToBase64";
     let lastFiles = null;
     let currentImageDataUrl = "";
-    let imageItems = [];  // { index, name, base64, dataUrl }
+    let imageItems = []; // { index, name, base64, dataUrl }
     let currentPreviewIndex = -1;
 
     function setMode(mode) {
@@ -997,20 +1016,16 @@
       rightErrorB64.textContent = "";
       rightErrorB64.style.color = "#f97373";
       b64InfoText.textContent = "";
-
       previewImage.classList.remove("zoomed");
       previewImageB64.classList.remove("zoomed");
-
       previewImage.style.display = "none";
       previewImage.src = "";
       previewPlaceholder.style.display = "block";
       currentPreviewIndex = -1;
-
       thumbsGrid.innerHTML = "";
       thumbsPlaceholder.style.display = "block";
       thumbsCountLabel.textContent = "";
       thumbsWrapper.style.display = "none";
-
       previewImageB64.style.display = "none";
       previewImageB64.src = "";
       previewPlaceholderB64.style.display = "block";
@@ -1018,30 +1033,23 @@
       if (mode === "imageToBase64") {
         modeImageToBase64Btn.classList.add("active");
         modeBase64ToImageBtn.classList.remove("active");
-
         document.getElementById("leftTitle").textContent = "Upload image(s)";
         document.getElementById("leftHint").textContent = "Select one or multiple images";
-
         panelImageToBase64.classList.remove("hidden");
         panelBase64ToImage.classList.add("hidden");
-
         optionsRow.classList.remove("disabled");
         uploadArea.style.pointerEvents = "auto";
         fileInput.disabled = false;
       } else {
         modeImageToBase64Btn.classList.remove("active");
         modeBase64ToImageBtn.classList.add("active");
-
         document.getElementById("leftTitle").textContent = "Base64 input";
         document.getElementById("leftHint").textContent = "Paste Base64 to render image";
-
         panelImageToBase64.classList.add("hidden");
         panelBase64ToImage.classList.remove("hidden");
-
         optionsRow.classList.add("disabled");
         uploadArea.style.pointerEvents = "none";
         fileInput.disabled = true;
-
         imageItems = [];
         renderCards();
       }
@@ -1049,43 +1057,40 @@
 
     modeImageToBase64Btn.addEventListener("click", () => setMode("imageToBase64"));
     modeBase64ToImageBtn.addEventListener("click", () => setMode("base64ToImage"));
-    setMode("imageToBase64");
-
-    // toggle advanced
-    let advancedVisible = false;
     toggleAdvancedBtn.addEventListener("click", () => {
-      advancedVisible = !advancedVisible;
-      if (advancedVisible) {
-        advancedOptions.classList.add("visible");
-        toggleAdvancedBtn.textContent = "Hide options";
+      advancedOptions.classList.toggle("visible");
+      if (advancedOptions.classList.contains("visible")) {
+        toggleAdvancedBtn.textContent = "Less options";
       } else {
-        advancedOptions.classList.remove("visible");
         toggleAdvancedBtn.textContent = "More options";
       }
     });
 
-    // zoom on preview images
-    previewImage.addEventListener("click", () => {
-      if (!previewImage.src) return;
-      previewImage.classList.toggle("zoomed");
-    });
-    previewImageB64.addEventListener("click", () => {
-      if (!previewImageB64.src) return;
-      previewImageB64.classList.toggle("zoomed");
-    });
-
-    // Image → Base64 upload
+    // File selection / drag-and-drop
     uploadArea.addEventListener("click", () => {
-      if (currentMode !== "imageToBase64") return;
-      fileInput.click();
+      if (currentMode === "imageToBase64") {
+        fileInput.click();
+      }
     });
 
     uploadArea.addEventListener("dragover", (e) => {
-      if (currentMode !== "imageToBase64") return;
-      e.preventDefault();
+      if (currentMode === "imageToBase64") {
+        e.preventDefault();
+        uploadArea.style.borderColor = varCss("accent");
+        uploadArea.style.boxShadow = "0 0 0 1px rgba(56, 189, 248, 0.25)";
+      }
+    });
+
+    uploadArea.addEventListener("dragleave", (e) => {
+      if (currentMode === "imageToBase64") {
+        uploadArea.style.borderColor = "rgba(148, 163, 184, 0.7)";
+        uploadArea.style.boxShadow = "none";
+      }
     });
 
     uploadArea.addEventListener("drop", (e) => {
+      uploadArea.style.borderColor = "rgba(148, 163, 184, 0.7)";
+      uploadArea.style.boxShadow = "none";
       if (currentMode !== "imageToBase64") return;
       e.preventDefault();
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
@@ -1108,7 +1113,6 @@
       previewPlaceholder.style.display = "block";
       currentPreviewIndex = -1;
       previewImage.classList.remove("zoomed");
-
       thumbsGrid.innerHTML = "";
       thumbsPlaceholder.style.display = "block";
       thumbsCountLabel.textContent = "";
@@ -1137,7 +1141,6 @@
       }
 
       let processedCount = 0;
-
       files.forEach((file, index) => {
         processSingleFile(file, (base64, dataUrl) => {
           if (base64 && dataUrl) {
@@ -1164,6 +1167,7 @@
     function processSingleFile(file, callback) {
       const isImageByType = file.type && file.type.startsWith("image/");
       const isImageByName = (file.name || "").toLowerCase().match(/\.(png|jpe?g|webp|gif|bmp|svg|svgz)$/i);
+
       if (!isImageByType && !isImageByName) {
         callback(null, null);
         return;
@@ -1175,6 +1179,7 @@
         const chosenFormat = formatSelect.value;
         const quality = Number(qualityRange.value) / 100;
 
+        // Skip processing for original format, or for SVG/SVGZ which canvas can't handle well
         if (
           chosenFormat === "original" ||
           (typeof file.type === "string" && file.type === "image/svg+xml") ||
@@ -1189,18 +1194,19 @@
         img.onload = () => {
           try {
             const mode = resizeModeSelect.value;
-            const maxW = parseInt(resizeWidthInput.value, 10);
-            const maxH = parseInt(resizeHeightInput.value, 10);
-
             let targetW = img.width;
             let targetH = img.height;
 
+            const maxW = Number(resizeWidthInput.value) || 0;
+            const maxH = Number(resizeHeightInput.value) || 0;
+
             if (mode === "fit" && (maxW > 0 || maxH > 0)) {
-              const scaleW = maxW > 0 ? maxW / img.width : Infinity;
-              const scaleH = maxH > 0 ? maxH / img.height : Infinity;
-              let scale = Math.min(scaleW, scaleH);
-              if (!isFinite(scale) || scale <= 0) {
-                scale = 1;
+              let scale = 1;
+              if (maxW > 0 && img.width > maxW) {
+                scale = maxW / img.width;
+              }
+              if (maxH > 0 && img.height * scale > maxH) {
+                scale = maxH / img.height;
               }
               targetW = Math.round(img.width * scale);
               targetH = Math.round(img.height * scale);
@@ -1229,7 +1235,6 @@
               const boxH = fontSize + padding;
               const x = targetW - boxW - padding;
               const y = targetH - padding;
-
               ctx.fillStyle = "rgba(15, 23, 42, 0.65)";
               ctx.fillRect(x, y - boxH, boxW, boxH);
               ctx.fillStyle = "rgba(248, 250, 252, 0.95)";
@@ -1248,12 +1253,15 @@
             callback(null, null);
           }
         };
+
         img.onerror = () => {
           leftError.textContent = "Could not load image data for: " + file.name;
           callback(null, null);
         };
+
         img.src = originalDataUrl;
       };
+
       reader.onerror = () => {
         leftError.textContent = "Failed to read file: " + file.name;
         callback(null, null);
@@ -1265,6 +1273,9 @@
       cardsContainer.innerHTML = "";
       rightErrorImg.textContent = "";
       rightErrorImg.style.color = "#f97373";
+      
+      // Change 5: Check Base64 Only state
+      const isBase64Only = base64OnlyCheckbox.checked;
 
       if (!imageItems || imageItems.length === 0) {
         imagesSummaryText.textContent = "No images yet.";
@@ -1282,25 +1293,33 @@
         const header = document.createElement("div");
         header.className = "b64-card-header";
         const leftSpan = document.createElement("span");
-        leftSpan.textContent = `Image ${idx + 1} of ${imageItems.length}`;
+        leftSpan.innerHTML = `Base64 for: <strong>${item.name}</strong>`;
         const rightSpan = document.createElement("span");
-        rightSpan.innerHTML = `<strong>${item.name}</strong>`;
+        rightSpan.innerHTML = `Size: ${Math.round(item.base64.length / 1024)} KB`;
         header.appendChild(leftSpan);
         header.appendChild(rightSpan);
 
         const textarea = document.createElement("textarea");
-        textarea.value = item.base64;
+        
+        // Change 5: Set textarea value based on Base64 Only checkbox
+        const mimeHeader = isBase64Only ? "" : `data:${getDataUrlMime(item.dataUrl)};base64,`;
+        textarea.value = mimeHeader + item.base64;
+        
+        textarea.readOnly = true;
 
         const buttonsRow = document.createElement("div");
         buttonsRow.className = "b64-card-buttons";
 
         const copyBtn = document.createElement("button");
         copyBtn.className = "btn small";
-        copyBtn.textContent = "Copy";
+        copyBtn.textContent = "Copy to clipboard";
         copyBtn.addEventListener("click", async () => {
+          rightErrorImg.textContent = "";
+          rightErrorImg.style.color = "#f97373";
           if (!textarea.value.trim()) return;
+
           try {
-            await navigator.clipboard.writeText(textarea.value.trim());
+            await navigator.clipboard.writeText(textarea.value);
             rightErrorImg.style.color = "#4ade80";
             rightErrorImg.textContent = `Copied Base64 for ${item.name}`;
             setTimeout(() => {
@@ -1331,7 +1350,6 @@
 
         buttonsRow.appendChild(copyBtn);
         buttonsRow.appendChild(downloadBtn);
-
         card.appendChild(header);
         card.appendChild(textarea);
         card.appendChild(buttonsRow);
@@ -1345,6 +1363,7 @@
         thumbsWrapper.style.display = "none";
         return;
       }
+
       thumbsWrapper.style.display = "block";
       thumbsPlaceholder.style.display = "none";
       thumbsCountLabel.textContent = `${imageItems.length} image${imageItems.length > 1 ? "s" : ""}`;
@@ -1356,11 +1375,9 @@
         img.src = item.dataUrl;
         img.alt = item.name;
         thumbItem.appendChild(img);
-
         thumbItem.addEventListener("click", () => {
           setActivePreview(index);
         });
-
         thumbsGrid.appendChild(thumbItem);
       });
     }
@@ -1393,6 +1410,35 @@
         handleFiles(lastFiles);
       }
     });
+    
+    // Change 5: Base64 Only checkbox listener
+    base64OnlyCheckbox.addEventListener("change", () => {
+      if (currentMode === "imageToBase64" && imageItems.length > 0) {
+        renderCards(); // Re-render cards to update output format
+      }
+    });
+
+    // Re-process on resize mode/dimensions/watermark change
+    resizeModeSelect.addEventListener("change", () => {
+      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
+        handleFiles(lastFiles);
+      }
+    });
+    resizeWidthInput.addEventListener("input", () => {
+      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
+        handleFiles(lastFiles);
+      }
+    });
+    resizeHeightInput.addEventListener("input", () => {
+      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
+        handleFiles(lastFiles);
+      }
+    });
+    watermarkTextInput.addEventListener("input", () => {
+      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
+        handleFiles(lastFiles);
+      }
+    });
 
     downloadAllBtn.addEventListener("click", () => {
       rightErrorImg.textContent = "";
@@ -1401,15 +1447,21 @@
         rightErrorImg.textContent = "Nothing to download. Please upload image(s) first.";
         return;
       }
+      
+      // Change 5: Download All logic respects Base64 Only checkbox
+      const isBase64Only = base64OnlyCheckbox.checked;
       let content = "";
       imageItems.forEach((item) => {
-        content += `// ${item.name}\n${item.base64}\n\n`;
+        const mimeHeader = isBase64Only ? "" : `data:${getDataUrlMime(item.dataUrl)};base64,`;
+        content += `// ${item.name}\n${mimeHeader}${item.base64}\n\n`;
       });
+      // End Change 5
+
       const blob = new Blob([content.trim()], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "images-base64.txt";
+      link.download = `images-base64-all.txt`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -1423,14 +1475,20 @@
         rightErrorImg.textContent = "Nothing to copy. Please upload image(s) first.";
         return;
       }
+      
+      // Change 5: Copy All logic respects Base64 Only checkbox
+      const isBase64Only = base64OnlyCheckbox.checked;
       let content = "";
       imageItems.forEach((item) => {
-        content += `// ${item.name}\n${item.base64}\n\n`;
+        const mimeHeader = isBase64Only ? "" : `data:${getDataUrlMime(item.dataUrl)};base64,`;
+        content += `// ${item.name}\n${mimeHeader}${item.base64}\n\n`;
       });
+      // End Change 5
+
       try {
         await navigator.clipboard.writeText(content.trim());
         rightErrorImg.style.color = "#4ade80";
-        rightErrorImg.textContent = "All Base64 blocks copied.";
+        rightErrorImg.textContent = `${imageItems.length} Base64 blocks copied.`;
         setTimeout(() => {
           rightErrorImg.textContent = "";
           rightErrorImg.style.color = "#f97373";
@@ -1450,11 +1508,30 @@
       const bstr = atob(parts[1]);
       let n = bstr.length;
       const u8arr = new Uint8Array(n);
+
       while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
       }
       return new Blob([u8arr], { type: mime });
     }
+
+    function getDataUrlMime(dataUrl) {
+      const match = dataUrl.match(/data:(.*?);base64/);
+      return match ? match[1] : 'image/png';
+    }
+
+    function varCss(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`);
+    }
+
+    // Zoom for preview
+    previewImage.addEventListener("click", () => {
+      previewImage.classList.toggle("zoomed");
+    });
+    previewImageB64.addEventListener("click", () => {
+      previewImageB64.classList.toggle("zoomed");
+    });
+
 
     // Base64 → Image
     singleClearBtn.addEventListener("click", () => {
@@ -1491,51 +1568,46 @@
     });
 
     singleBase64Input.addEventListener("input", () => {
-      if (currentMode !== "base64ToImage") return;
-
       rightErrorB64.textContent = "";
-      rightErrorB64.style.color = "#f97373";
       b64InfoText.textContent = "";
+      currentImageDataUrl = "";
+      previewImageB64.style.display = "none";
       previewImageB64.classList.remove("zoomed");
+      previewPlaceholderB64.style.display = "block";
 
-      const value = singleBase64Input.value.trim();
-      if (!value) {
-        currentImageDataUrl = "";
-        previewImageB64.src = "";
-        previewImageB64.style.display = "none";
-        previewPlaceholderB64.style.display = "block";
+      const base64 = singleBase64Input.value.trim();
+      if (!base64) {
         return;
       }
 
-      let base64 = value;
-      let mime = "image/png";
-
-      if (base64.startsWith("data:")) {
-        const match = base64.match(/^data:(.*?);base64,(.*)$/s);
-        if (match) {
-          mime = match[1] || "image/png";
-          base64 = match[2] || "";
-        } else {
-          const commaIndex = base64.indexOf(",");
-          if (commaIndex !== -1) {
-            base64 = base64.slice(commaIndex + 1);
-          }
-        }
+      let dataUrl = base64;
+      if (!base64.startsWith("data:")) {
+        dataUrl = "data:image/png;base64," + base64; // Default to PNG if no header
       }
 
-      try {
-        const dataUrl = `data:${mime};base64,` + base64;
+      // Quick check to see if it's too short (Base64 is 4 chars per 3 bytes)
+      const base64Part = dataUrl.split(",")[1] || "";
+      if (base64Part.length < 10) {
+        rightErrorB64.textContent = "Base64 string is too short/invalid.";
+        return;
+      }
+
+      const img = new Image();
+      img.onload = () => {
         currentImageDataUrl = dataUrl;
-        previewImageB64.src = dataUrl;
+        previewImageB64.src = currentImageDataUrl;
         previewImageB64.style.display = "block";
         previewPlaceholderB64.style.display = "none";
 
-        const approxBytes = Math.floor(base64.length * 0.75);
-        const kb = (approxBytes / 1024).toFixed(1);
+        const mime = getDataUrlMime(currentImageDataUrl);
+        // Fix for base64Part.length * 0.75 - is not always correct due to padding
+        const kb = Math.round(base64Part.length * 0.75 / 1024); 
         b64InfoText.textContent = `Detected type: ${mime} • Approx. size: ${kb} KB`;
-      } catch (err) {
+      };
+      img.onerror = () => {
         rightErrorB64.textContent = "Invalid Base64 string.";
-      }
+      };
+      img.src = dataUrl;
     });
 
     singleDownloadImageBtn.addEventListener("click", () => {
@@ -1571,12 +1643,15 @@
       }, 400);
 
       rightErrorB64.style.color = "#4ade80";
-      rightErrorB64.textContent = "Image download started (or opened in a new tab).";
+      rightErrorB64.textContent = "Download initiated.";
       setTimeout(() => {
         rightErrorB64.textContent = "";
         rightErrorB64.style.color = "#f97373";
-      }, 2500);
+      }, 1500);
     });
+
+    // Initial setup
+    setMode("imageToBase64");
   </script>
 </body>
 </html>
