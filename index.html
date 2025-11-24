@@ -132,6 +132,77 @@
       border: 1px solid rgba(34, 197, 94, 0.4);
     }
 
+    /* WAITLIST BLOCK */
+    .waitlist-wrapper {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .waitlist-text {
+      font-size: 0.78rem;
+      color: var(--muted);
+      max-width: 320px;
+    }
+
+    .waitlist-text span {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .waitlist-form {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .waitlist-input {
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text);
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      min-width: 210px;
+      outline: none;
+    }
+
+    .waitlist-input::placeholder {
+      color: #6b7280;
+    }
+
+    .waitlist-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.45);
+    }
+
+    .waitlist-small {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    @media (max-width: 640px) {
+      .waitlist-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .waitlist-form {
+        width: 100%;
+      }
+      .waitlist-input {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+
     .mode-toggle {
       display: inline-flex;
       background: var(--bg-soft);
@@ -139,6 +210,7 @@
       padding: 4px;
       border: 1px solid rgba(75, 85, 99, 0.7);
       margin-bottom: 16px;
+      margin-top: 10px;
     }
 
     .mode-button {
@@ -573,6 +645,61 @@
       min-height: 1em;
     }
 
+    /* PRO SECTION */
+    .pro-section {
+      margin-top: 22px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18) 0, #020617 55%);
+      border: 1px dashed rgba(56, 189, 248, 0.7);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .pro-main {
+      flex: 2;
+      min-width: 210px;
+    }
+
+    .pro-main-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .pro-main-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .pro-list {
+      flex: 2;
+      min-width: 210px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .pro-list ul {
+      margin: 0;
+      padding-left: 16px;
+    }
+
+    .pro-cta {
+      flex: 1;
+      min-width: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .pro-tag {
+      font-size: 0.7rem;
+      color: #fde68a;
+    }
+
     footer {
       margin-top: 18px;
       font-size: 0.75rem;
@@ -596,12 +723,43 @@
         <span class="pill-badge">No upload • All in your browser</span>
       </div>
       <p class="subtitle">
-        Convert images to Base64 or Base64 back to images – with resizing, watermark, multi-image support and more. Everything is processed locally in your browser.
+        Convert images to Base64 or Base64 back to images – with resizing, watermark, multi-image support and more.
+        Everything is processed locally in your browser.
       </p>
       <div class="features-list">
         <span>Multiple images in one go</span>
         <span>Advanced resize & watermark</span>
         <span>Copy & download friendly outputs</span>
+      </div>
+
+      <!-- WAITLIST BLOCK -->
+      <div class="waitlist-wrapper">
+        <div class="waitlist-text">
+          <strong>Pro version is coming soon.</strong><br />
+          Get early access to <span>batch ZIP download</span>, <span>Chrome / VSCode extensions</span> and more.
+        </div>
+        <form
+          class="waitlist-form"
+          action="https://formsubmit.co/YOUR_EMAIL_HERE"
+          method="POST"
+          target="_blank"
+        >
+          <!-- IMPORTANT: replace YOUR_EMAIL_HERE with your real email -->
+          <input type="hidden" name="_subject" value="Image2Base64 Pro – Waitlist signup" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <input
+            type="email"
+            name="email"
+            class="waitlist-input"
+            placeholder="Enter your email for early access"
+            required
+          />
+          <button class="btn primary small" type="submit">Join waitlist</button>
+        </form>
+      </div>
+      <div class="waitlist-small">
+        Free forever for basic use. Pro will be optional for power users only.
       </div>
     </header>
 
@@ -611,7 +769,7 @@
     </div>
 
     <div class="grid">
-      <!-- LEFT -->
+      <!-- LEFT CARD -->
       <div class="card">
         <div class="card-header">
           <div id="leftTitle">Upload image(s)</div>
@@ -695,7 +853,7 @@
         <div class="error-text" id="leftError"></div>
       </div>
 
-      <!-- RIGHT -->
+      <!-- RIGHT CARD -->
       <div class="card">
         <!-- Image → Base64 -->
         <div id="panelImageToBase64">
@@ -749,9 +907,33 @@
       </div>
     </div>
 
+    <!-- PRO COMING SOON SECTION -->
+    <section class="pro-section">
+      <div class="pro-main">
+        <div class="pro-main-title">Image2Base64 Pro (coming soon)</div>
+        <div class="pro-main-sub">
+          For power users who work with images daily – agencies, frontend teams, designers and automation lovers.
+        </div>
+      </div>
+      <div class="pro-list">
+        <ul>
+          <li>Batch convert & download everything as a single ZIP</li>
+          <li>Extra compression & smart presets</li>
+          <li>Chrome / VSCode extensions for 1-click conversion</li>
+          <li>Simple API for scripts & CI pipelines</li>
+        </ul>
+      </div>
+      <div class="pro-cta">
+        <span class="pro-tag">Soon: affordable lifetime & monthly plans</span>
+        <button class="btn small" type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+          Join waitlist above
+        </button>
+      </div>
+    </section>
+
     <footer>
       <span>Runs fully in your browser – no files are uploaded.</span>
-      <span>Made with ❤️ for developers & designers.</span>
+      <span>Made with ❤️ by Yakir. Feedback is always welcome.</span>
     </footer>
   </div>
 
@@ -820,7 +1002,6 @@
       previewImage.classList.remove("zoomed");
       previewImageB64.classList.remove("zoomed");
 
-      // reset left preview + thumbnails
       previewImage.style.display = "none";
       previewImage.src = "";
       previewPlaceholder.style.display = "block";
@@ -831,7 +1012,6 @@
       thumbsCountLabel.textContent = "";
       thumbsWrapper.style.display = "none";
 
-      // reset Base64→Image preview
       previewImageB64.style.display = "none";
       previewImageB64.src = "";
       previewPlaceholderB64.style.display = "block";
@@ -895,7 +1075,7 @@
       previewImageB64.classList.toggle("zoomed");
     });
 
-    // --- Image → Base64: upload ---
+    // Image → Base64 upload
     uploadArea.addEventListener("click", () => {
       if (currentMode !== "imageToBase64") return;
       fileInput.click();
@@ -996,7 +1176,6 @@
         const chosenFormat = formatSelect.value;
         const quality = Number(qualityRange.value) / 100;
 
-        // SVG/other vector or original mode – just return as-is
         if (
           chosenFormat === "original" ||
           (typeof file.type === "string" && file.type === "image/svg+xml") ||
@@ -1040,7 +1219,6 @@
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0, targetW, targetH);
 
-            // watermark
             const watermark = watermarkTextInput.value.trim();
             if (watermark) {
               const padding = Math.max(8, targetW * 0.015);
@@ -1263,7 +1441,6 @@
       }
     });
 
-    // helper: dataURL -> Blob
     function dataUrlToBlob(dataUrl) {
       const parts = dataUrl.split(",");
       if (parts.length < 2) return null;
@@ -1280,7 +1457,7 @@
       return new Blob([u8arr], { type: mime });
     }
 
-    // --- Base64 → Image ---
+    // Base64 → Image
     singleClearBtn.addEventListener("click", () => {
       singleBase64Input.value = "";
       rightErrorB64.textContent = "";
@@ -1391,9 +1568,7 @@
       setTimeout(() => {
         try {
           window.open(currentImageDataUrl, "_blank");
-        } catch (e) {
-          // ignore
-        }
+        } catch (e) {}
       }, 400);
 
       rightErrorB64.style.color = "#4ade80";
