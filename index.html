@@ -108,7 +108,6 @@
       max-width: 580px;
     }
 
-    /* NEW: header mini tagline */
     .header-tagline {
       font-size: 0.8rem;
       color: var(--muted);
@@ -139,7 +138,6 @@
       border: 1px solid rgba(34, 197, 94, 0.4);
     }
 
-    /* WAITLIST BLOCK */
     .waitlist-wrapper {
       margin-top: 10px;
       padding: 10px 12px;
@@ -241,7 +239,6 @@
       white-space: nowrap;
     }
 
-    /* UPDATED: stronger highlight for active mode */
     .mode-button.active {
       background: radial-gradient(circle at top, rgba(56, 189, 248, 0.25) 0, rgba(15, 23, 42, 0.9) 55%);
       color: var(--text);
@@ -656,14 +653,12 @@
       min-height: 1em;
     }
 
-    /* Tip under Base64 panel */
     .panel-tip {
       font-size: 0.75rem;
       color: var(--muted);
       margin: 2px 0 6px;
     }
 
-    /* PRO SECTION */
     .pro-section {
       margin-top: 22px;
       padding: 14px 16px;
@@ -744,7 +739,6 @@
         Convert images to Base64 or Base64 back to images – with resizing, watermark, multi-image support and more.
         Everything is processed locally in your browser.
       </p>
-      <!-- NEW: branded tagline -->
       <p class="header-tagline">
         Built for developers & designers • Free, fast & private.
       </p>
@@ -888,7 +882,6 @@
             <div>Base64 output (per image)</div>
             <small>Each image gets its own block</small>
           </div>
-          <!-- NEW: micro-tip under Base64 output -->
           <p class="panel-tip">
             Tip: Perfect for embedding inline images in HTML, CSS, JSON or emails.
           </p>
@@ -962,7 +955,7 @@
     
     <div class="seo-text" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(55, 65, 81, 0.7);">
       <h2 style="font-size: 1.2rem; color: var(--accent); margin-bottom: 8px;">What is Base64 and Why Convert Images?</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; line-height: 1.5%;">
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; line-height: 1.5;">
         Base64 is a binary-to-text encoding scheme that converts binary data (like images) into a sequence of ASCII characters.
         This is commonly used in web development and programming to embed image data directly into files like HTML, CSS, or JSON,
         avoiding external HTTP requests. Converting small icons or design elements to Base64 speeds up website loading times by
@@ -1092,14 +1085,11 @@
 
     toggleAdvancedBtn.addEventListener("click", () => {
       advancedOptions.classList.toggle("visible");
-      if (advancedOptions.classList.contains("visible")) {
-        toggleAdvancedBtn.textContent = "Less options";
-      } else {
-        toggleAdvancedBtn.textContent = "More options";
-      }
+      toggleAdvancedBtn.textContent = advancedOptions.classList.contains("visible")
+        ? "Less options"
+        : "More options";
     });
 
-    // File selection / drag-and-drop
     uploadArea.addEventListener("click", () => {
       if (currentMode === "imageToBase64") {
         fileInput.click();
@@ -1212,7 +1202,6 @@
         const chosenFormat = formatSelect.value;
         const quality = Number(qualityRange.value) / 100;
 
-        // Skip processing for original format, or for SVG/SVGZ which canvas can't handle well
         if (
           chosenFormat === "original" ||
           (typeof file.type === "string" && file.type === "image/svg+xml") ||
@@ -1360,10 +1349,10 @@
           }
         });
 
-        const downloadBtn = document.createElement("button");
-        downloadBtn.className = "btn small";
-        downloadBtn.textContent = "Download .txt";
-        downloadBtn.addEventListener("click", () => {
+        const downloadTxtBtn = document.createElement("button");
+        downloadTxtBtn.className = "btn small";
+        downloadTxtBtn.textContent = "Download .txt";
+        downloadTxtBtn.addEventListener("click", () => {
           if (!textarea.value.trim()) return;
           const blob = new Blob([textarea.value.trim()], { type: "text/plain;charset=utf-8" });
           const url = URL.createObjectURL(blob);
@@ -1377,8 +1366,45 @@
           URL.revokeObjectURL(url);
         });
 
+        // NEW: Download image button for Image → Base64
+        const downloadImageBtn = document.createElement("button");
+        downloadImageBtn.className = "btn primary small";
+        downloadImageBtn.textContent = "Download image";
+        downloadImageBtn.addEventListener("click", () => {
+          rightErrorImg.textContent = "";
+          rightErrorImg.style.color = "#f97373";
+          if (!item.dataUrl) {
+            rightErrorImg.textContent = "No image data to download.";
+            return;
+          }
+
+          const blob = dataUrlToBlob(item.dataUrl);
+          if (!blob) {
+            rightErrorImg.textContent = "Could not prepare image for download.";
+            return;
+          }
+
+          const mime = getDataUrlMime(item.dataUrl);
+          let ext = "png";
+          if (mime === "image/jpeg") ext = "jpg";
+          else if (mime === "image/webp") ext = "webp";
+          else if (mime === "image/gif") ext = "gif";
+
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          const safeName = item.name.replace(/[^a-z0-9_\-\.]/gi, "_") || "image";
+          link.href = url;
+          link.download = `${safeName}-converted.${ext}`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        });
+
         buttonsRow.appendChild(copyBtn);
-        buttonsRow.appendChild(downloadBtn);
+        buttonsRow.appendChild(downloadTxtBtn);
+        buttonsRow.appendChild(downloadImageBtn);
+
         card.appendChild(header);
         card.appendChild(textarea);
         card.appendChild(buttonsRow);
@@ -1427,7 +1453,6 @@
       });
     }
 
-    // ---- DEBOUNCE ----
     function debounce(fn, delay) {
       let timeout;
       return (...args) => {
@@ -1455,7 +1480,7 @@
     
     base64OnlyCheckbox.addEventListener("change", () => {
       if (currentMode === "imageToBase64" && imageItems.length > 0) {
-        renderCards(); // Re-render cards to update output format
+        renderCards();
       }
     });
 
@@ -1555,7 +1580,6 @@
       return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`);
     }
 
-    // Zoom for preview
     previewImage.addEventListener("click", () => {
       previewImage.classList.toggle("zoomed");
     });
@@ -1563,7 +1587,6 @@
       previewImageB64.classList.toggle("zoomed");
     });
 
-    // Base64 → Image
     singleClearBtn.addEventListener("click", () => {
       singleBase64Input.value = "";
       rightErrorB64.textContent = "";
@@ -1612,7 +1635,7 @@
 
       let dataUrl = base64;
       if (!base64.startsWith("data:")) {
-        dataUrl = "data:image/png;base64," + base64; // Default to PNG if no header
+        dataUrl = "data:image/png;base64," + base64;
       }
 
       const base64Part = dataUrl.split(",")[1] || "";
@@ -1677,7 +1700,6 @@
       }, 1500);
     });
 
-    // Initial setup
     setMode("imageToBase64");
   </script>
 </body>
