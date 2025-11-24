@@ -108,6 +108,13 @@
       max-width: 580px;
     }
 
+    /* NEW: header mini tagline */
+    .header-tagline {
+      font-size: 0.8rem;
+      color: var(--muted);
+      opacity: 0.9;
+    }
+
     .features-list {
       display: flex;
       flex-wrap: wrap;
@@ -234,11 +241,15 @@
       white-space: nowrap;
     }
 
+    /* UPDATED: stronger highlight for active mode */
     .mode-button.active {
-      background: var(--accent-soft);
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.25) 0, rgba(15, 23, 42, 0.9) 55%);
       color: var(--text);
       transform: translateY(-1px);
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
+      box-shadow:
+        0 0 0 1px rgba(56, 189, 248, 0.6),
+        0 6px 16px rgba(15, 23, 42, 0.8);
+      font-weight: 600;
     }
 
     .grid {
@@ -575,8 +586,8 @@
 
     .b64-card textarea {
       width: 100%;
-      min-height: 120px; /* Enhanced height for better viewing */
-      max-height: 200px; /* Enhanced max-height */
+      min-height: 120px;
+      max-height: 200px;
       border-radius: 10px;
       border: 1px solid rgba(55, 65, 81, 0.9);
       background: rgba(15, 23, 42, 0.95);
@@ -616,8 +627,8 @@
 
     .single-b64-textarea {
       width: 100%;
-      min-height: 180px; /* Enhanced height for Base64 input */
-      max-height: 400px; /* Enhanced max-height */
+      min-height: 180px;
+      max-height: 400px;
       border-radius: 12px;
       border: 1px solid rgba(75, 85, 99, 0.8);
       background: rgba(15, 23, 42, 0.92);
@@ -643,6 +654,13 @@
       color: var(--muted);
       margin-top: 4px;
       min-height: 1em;
+    }
+
+    /* Tip under Base64 panel */
+    .panel-tip {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin: 2px 0 6px;
     }
 
     /* PRO SECTION */
@@ -726,6 +744,11 @@
         Convert images to Base64 or Base64 back to images – with resizing, watermark, multi-image support and more.
         Everything is processed locally in your browser.
       </p>
+      <!-- NEW: branded tagline -->
+      <p class="header-tagline">
+        Built for developers & designers • Free, fast & private.
+      </p>
+
       <div class="features-list">
         <span>Multiple images in one go</span>
         <span>Advanced resize & watermark</span>
@@ -745,8 +768,7 @@
         >
           <input type="hidden" name="_subject" value="Image2Base64 Pro – Waitlist signup" />
           <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" 
-          name="_template" value="table" />
+          <input type="hidden" name="_template" value="table" />
           <input
             type="email"
             name="email"
@@ -754,13 +776,11 @@
             placeholder="Enter your email for early access"
             required
           />
-          <button class="btn primary 
-          small" type="submit">Join waitlist</button>
+          <button class="btn primary small" type="submit">Join waitlist</button>
         </form>
       </div>
       <div class="waitlist-small">
-        Free forever for basic use.
-        Pro will be optional for power users only.
+        Free forever for basic use. Pro will be optional for power users only.
       </div>
     </header>
 
@@ -773,16 +793,14 @@
       <div class="card">
         <div class="card-header">
           <div id="leftTitle">Upload image(s)</div>
-          <small id="leftHint">Select one or 
-          multiple images</small>
+          <small id="leftHint">Select one or multiple images</small>
         </div>
 
         <div class="upload-area" id="uploadArea">
           <p><strong>Click to select image(s)</strong> or drop them here</p>
         </div>
 
-        <input type="file" id="fileInput" accept="image/*,.svg,.svgz" multiple style="display:none;"
-        />
+        <input type="file" id="fileInput" accept="image/*,.svg,.svgz" multiple style="display:none;" />
 
         <div class="options-row" id="optionsRow">
           <div class="option">
@@ -799,13 +817,18 @@
             <label for="qualityRange">
               Quality <span id="qualityValue">90%</span>
             </label>
-            <input type="range" id="qualityRange" min="10" max="100" value="90" 
-            />
+            <input type="range" id="qualityRange" min="10" max="100" value="90" />
           </div>
           
           <div class="option" style="min-width: 150px; display: flex; align-items: flex-end; padding-bottom: 4px;">
-            <input type="checkbox" id="base64OnlyCheckbox" style="margin-right: 8px; transform: scale(1.15); accent-color: var(--accent);" />
-            <label for="base64OnlyCheckbox" style="margin-bottom: 0; font-size: 0.86rem; color: var(--text);">Base64 Only</label>
+            <input
+              type="checkbox"
+              id="base64OnlyCheckbox"
+              style="margin-right: 8px; transform: scale(1.15); accent-color: var(--accent);"
+            />
+            <label for="base64OnlyCheckbox" style="margin-bottom: 0; font-size: 0.86rem; color: var(--text);">
+              Base64 Only
+            </label>
           </div>
           <div class="advanced-toggle">
             <button class="btn small" id="toggleAdvancedBtn" type="button">More options</button>
@@ -824,8 +847,7 @@
           </div>
           <div class="option">
             <label>Width / height (px)</label>
-            <div style="display:flex;
-            gap:6px;">
+            <div style="display:flex; gap:6px;">
               <input type="number" id="resizeWidth" class="advanced-small-input" placeholder="Width" min="1" />
               <input type="number" id="resizeHeight" class="advanced-small-input" placeholder="Height" min="1" />
             </div>
@@ -836,8 +858,7 @@
               type="text"
               id="watermarkText"
               class="advanced-small-input"
-              placeholder="e.g.
-              yakirpinchas.github.io/image2base64"
+              placeholder="e.g. yakirpinchas.github.io/image2base64"
             />
           </div>
         </div>
@@ -867,13 +888,16 @@
             <div>Base64 output (per image)</div>
             <small>Each image gets its own block</small>
           </div>
+          <!-- NEW: micro-tip under Base64 output -->
+          <p class="panel-tip">
+            Tip: Perfect for embedding inline images in HTML, CSS, JSON or emails.
+          </p>
 
           <div id="cardsContainer" class="b64-cards-container"></div>
 
           <div class="download-all-row" id="downloadAllRow">
             <span id="imagesSummaryText">No images yet.</span>
-            <div style="display:flex;
-            gap:6px;">
+            <div style="display:flex; gap:6px;">
               <button class="btn small" id="copyAllBtn">Copy all</button>
               <button class="btn small" id="downloadAllBtn">Download all as .txt</button>
             </div>
@@ -891,15 +915,14 @@
           <textarea
             id="singleBase64Input"
             class="single-b64-textarea"
-            placeholder="Paste your Base64 
-            string here (with or without data:image/...;base64,)"></textarea>
+            placeholder="Paste your Base64 string here (with or without data:image/...;base64,)"
+          ></textarea>
 
           <div class="preview-wrapper" id="previewWrapperB64">
             <div class="preview-placeholder" id="previewPlaceholderB64">
               Image preview will appear here.
             </div>
-            <img id="previewImageB64" alt="Preview from Base64" style="display:none;"
-            />
+            <img id="previewImageB64" alt="Preview from Base64" style="display:none;" />
           </div>
           <div class="b64-info" id="b64InfoText"></div>
 
@@ -943,21 +966,31 @@
         Base64 is a binary-to-text encoding scheme that converts binary data (like images) into a sequence of ASCII characters.
         This is commonly used in web development and programming to embed image data directly into files like HTML, CSS, or JSON,
         avoiding external HTTP requests. Converting small icons or design elements to Base64 speeds up website loading times by
-        reducing the number of server calls. Our **free Image to Base64 Converter** is fast and secure because **all processing is done
-        locally in your browser**, ensuring your files are never uploaded to any server.
+        reducing the number of server calls. Our <strong>free Image to Base64 Converter</strong> is fast and secure because
+        <strong>all processing is done locally in your browser</strong>, ensuring your files are never uploaded to any server.
       </p>
       <h3 style="font-size: 1rem; color: var(--muted); margin-bottom: 6px;">Key Benefits for Developers & Designers</h3>
       <ul style="font-size: 0.8rem; color: var(--muted); padding-left: 20px; margin-top: 0; line-height: 1.5;">
-        <li>**Performance:** Embed small images directly into stylesheets to eliminate HTTP requests and improve load time.</li>
-        <li>**Advanced Features:** Utilize built-in tools for **resizing**, **quality control**, and **watermarking** before conversion.</li>
-        <li>**Privacy:** Enjoy maximum security with our "No Upload" guarantee for all conversions.</li>
-        <li>**Multi-Image Support:** Easily convert multiple files in a single batch, and copy or download all results at once.</li>
+        <li><strong>Performance:</strong> Embed small images directly into stylesheets to eliminate HTTP requests and improve load time.</li>
+        <li><strong>Advanced Features:</strong> Utilize built-in tools for <strong>resizing</strong>, <strong>quality control</strong>, and <strong>watermarking</strong> before conversion.</li>
+        <li><strong>Privacy:</strong> Enjoy maximum security with our "No Upload" guarantee for all conversions.</li>
+        <li><strong>Multi-Image Support:</strong> Easily convert multiple files in a single batch, and copy or download all results at once.</li>
       </ul>
     </div>
+
     <footer>
       <span>Runs fully in your browser – no files are uploaded.</span>
-      <span>Made with ❤️ by Yakir.
-      Feedback is always welcome.</span>
+      <span>
+        Made with ❤️ by Yakir •
+        <a
+          href="https://github.com/yakirpinchas/image2base64"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="color: var(--accent); text-decoration: none;"
+        >
+          GitHub
+        </a>
+      </span>
     </footer>
   </div>
 
@@ -976,7 +1009,6 @@
     const formatSelect = document.getElementById("formatSelect");
     const qualityRange = document.getElementById("qualityRange");
     const qualityValue = document.getElementById("qualityValue");
-    // Change 5: Base64 Only Checkbox Variable
     const base64OnlyCheckbox = document.getElementById("base64OnlyCheckbox"); 
     const optionsRow = document.getElementById("optionsRow");
     const toggleAdvancedBtn = document.getElementById("toggleAdvancedBtn");
@@ -1057,6 +1089,7 @@
 
     modeImageToBase64Btn.addEventListener("click", () => setMode("imageToBase64"));
     modeBase64ToImageBtn.addEventListener("click", () => setMode("base64ToImage"));
+
     toggleAdvancedBtn.addEventListener("click", () => {
       advancedOptions.classList.toggle("visible");
       if (advancedOptions.classList.contains("visible")) {
@@ -1081,7 +1114,7 @@
       }
     });
 
-    uploadArea.addEventListener("dragleave", (e) => {
+    uploadArea.addEventListener("dragleave", () => {
       if (currentMode === "imageToBase64") {
         uploadArea.style.borderColor = "rgba(148, 163, 184, 0.7)";
         uploadArea.style.boxShadow = "none";
@@ -1274,7 +1307,6 @@
       rightErrorImg.textContent = "";
       rightErrorImg.style.color = "#f97373";
       
-      // Change 5: Check Base64 Only state
       const isBase64Only = base64OnlyCheckbox.checked;
 
       if (!imageItems || imageItems.length === 0) {
@@ -1286,7 +1318,7 @@
       imagesSummaryText.textContent = `${imageItems.length} image${imageItems.length > 1 ? "s" : ""} converted.`;
       downloadAllRow.classList.remove("disabled");
 
-      imageItems.forEach((item, idx) => {
+      imageItems.forEach((item) => {
         const card = document.createElement("div");
         card.className = "b64-card";
 
@@ -1300,11 +1332,8 @@
         header.appendChild(rightSpan);
 
         const textarea = document.createElement("textarea");
-        
-        // Change 5: Set textarea value based on Base64 Only checkbox
         const mimeHeader = isBase64Only ? "" : `data:${getDataUrlMime(item.dataUrl)};base64,`;
         textarea.value = mimeHeader + item.base64;
-        
         textarea.readOnly = true;
 
         const buttonsRow = document.createElement("div");
@@ -1411,14 +1440,12 @@
       }
     });
     
-    // Change 5: Base64 Only checkbox listener
     base64OnlyCheckbox.addEventListener("change", () => {
       if (currentMode === "imageToBase64" && imageItems.length > 0) {
         renderCards(); // Re-render cards to update output format
       }
     });
 
-    // Re-process on resize mode/dimensions/watermark change
     resizeModeSelect.addEventListener("change", () => {
       if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
         handleFiles(lastFiles);
@@ -1448,14 +1475,12 @@
         return;
       }
       
-      // Change 5: Download All logic respects Base64 Only checkbox
       const isBase64Only = base64OnlyCheckbox.checked;
       let content = "";
       imageItems.forEach((item) => {
         const mimeHeader = isBase64Only ? "" : `data:${getDataUrlMime(item.dataUrl)};base64,`;
         content += `// ${item.name}\n${mimeHeader}${item.base64}\n\n`;
       });
-      // End Change 5
 
       const blob = new Blob([content.trim()], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
@@ -1476,14 +1501,12 @@
         return;
       }
       
-      // Change 5: Copy All logic respects Base64 Only checkbox
       const isBase64Only = base64OnlyCheckbox.checked;
       let content = "";
       imageItems.forEach((item) => {
         const mimeHeader = isBase64Only ? "" : `data:${getDataUrlMime(item.dataUrl)};base64,`;
         content += `// ${item.name}\n${mimeHeader}${item.base64}\n\n`;
       });
-      // End Change 5
 
       try {
         await navigator.clipboard.writeText(content.trim());
@@ -1531,7 +1554,6 @@
     previewImageB64.addEventListener("click", () => {
       previewImageB64.classList.toggle("zoomed");
     });
-
 
     // Base64 → Image
     singleClearBtn.addEventListener("click", () => {
@@ -1585,7 +1607,6 @@
         dataUrl = "data:image/png;base64," + base64; // Default to PNG if no header
       }
 
-      // Quick check to see if it's too short (Base64 is 4 chars per 3 bytes)
       const base64Part = dataUrl.split(",")[1] || "";
       if (base64Part.length < 10) {
         rightErrorB64.textContent = "Base64 string is too short/invalid.";
@@ -1600,7 +1621,6 @@
         previewPlaceholderB64.style.display = "none";
 
         const mime = getDataUrlMime(currentImageDataUrl);
-        // Fix for base64Part.length * 0.75 - is not always correct due to padding
         const kb = Math.round(base64Part.length * 0.75 / 1024); 
         b64InfoText.textContent = `Detected type: ${mime} • Approx. size: ${kb} KB`;
       };
@@ -1635,7 +1655,6 @@
         URL.revokeObjectURL(url);
       }, 0);
 
-      // fallback – open in new tab if downloads are blocked
       setTimeout(() => {
         try {
           window.open(currentImageDataUrl, "_blank");
