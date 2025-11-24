@@ -868,11 +868,6 @@
           <img id="previewImage" alt="Preview" style="display:none;" />
         </div>
 
-        <!-- NEW: download processed image button under the preview -->
-        <div class="buttons-row">
-          <button class="btn primary small" id="downloadProcessedImageBtn">Download image</button>
-        </div>
-
         <div class="thumbs-wrapper" id="thumbsWrapper">
           <div class="thumbs-header">
             <span>Thumbnails</span>
@@ -967,7 +962,7 @@
     
     <div class="seo-text" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(55, 65, 81, 0.7);">
       <h2 style="font-size: 1.2rem; color: var(--accent); margin-bottom: 8px;">What is Base64 and Why Convert Images?</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; line-height: 1.5;">
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; line-height: 1.5%;">
         Base64 is a binary-to-text encoding scheme that converts binary data (like images) into a sequence of ASCII characters.
         This is commonly used in web development and programming to embed image data directly into files like HTML, CSS, or JSON,
         avoiding external HTTP requests. Converting small icons or design elements to Base64 speeds up website loading times by
@@ -1038,7 +1033,6 @@
     const singleDownloadImageBtn = document.getElementById("singleDownloadImageBtn");
     const rightErrorB64 = document.getElementById("rightErrorB64");
     const b64InfoText = document.getElementById("b64InfoText");
-    const downloadProcessedImageBtn = document.getElementById("downloadProcessedImageBtn");
 
     let currentMode = "imageToBase64";
     let lastFiles = null;
@@ -1067,7 +1061,6 @@
       previewImageB64.style.display = "none";
       previewImageB64.src = "";
       previewPlaceholderB64.style.display = "block";
-      currentImageDataUrl = "";
 
       if (mode === "imageToBase64") {
         modeImageToBase64Btn.classList.add("active");
@@ -1079,7 +1072,6 @@
         optionsRow.classList.remove("disabled");
         uploadArea.style.pointerEvents = "auto";
         fileInput.disabled = false;
-        downloadProcessedImageBtn.classList.remove("disabled");
       } else {
         modeImageToBase64Btn.classList.remove("active");
         modeBase64ToImageBtn.classList.add("active");
@@ -1090,7 +1082,6 @@
         optionsRow.classList.add("disabled");
         uploadArea.style.pointerEvents = "none";
         fileInput.disabled = true;
-        downloadProcessedImageBtn.classList.add("disabled");
         imageItems = [];
         renderCards();
       }
@@ -1159,7 +1150,6 @@
       thumbsPlaceholder.style.display = "block";
       thumbsCountLabel.textContent = "";
       thumbsWrapper.style.display = "none";
-      currentImageDataUrl = "";
 
       const files = Array.from(fileList).filter((f) => {
         if (f.type && f.type.startsWith("image/")) return true;
@@ -1370,10 +1360,10 @@
           }
         });
 
-        const downloadTxtBtn = document.createElement("button");
-        downloadTxtBtn.className = "btn small";
-        downloadTxtBtn.textContent = "Download .txt";
-        downloadTxtBtn.addEventListener("click", () => {
+        const downloadBtn = document.createElement("button");
+        downloadBtn.className = "btn small";
+        downloadBtn.textContent = "Download .txt";
+        downloadBtn.addEventListener("click", () => {
           if (!textarea.value.trim()) return;
           const blob = new Blob([textarea.value.trim()], { type: "text/plain;charset=utf-8" });
           const url = URL.createObjectURL(blob);
@@ -1387,50 +1377,8 @@
           URL.revokeObjectURL(url);
         });
 
-        // NEW: per-card download of processed image
-        const downloadImgBtn = document.createElement("button");
-        downloadImgBtn.className = "btn primary small";
-        downloadImgBtn.textContent = "Download image";
-        downloadImgBtn.addEventListener("click", () => {
-          rightErrorImg.textContent = "";
-          rightErrorImg.style.color = "#f97373";
-
-          if (!item.dataUrl) {
-            rightErrorImg.textContent = "No image data available for this item.";
-            return;
-          }
-
-          const blob = dataUrlToBlob(item.dataUrl);
-          if (!blob) {
-            rightErrorImg.textContent = "Could not prepare image for download.";
-            return;
-          }
-
-          const mime = getDataUrlMime(item.dataUrl);
-          const ext = getExtFromMime(mime);
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = url;
-          const safeName = item.name.replace(/[^a-z0-9_\-\.]/gi, "_");
-          link.download = `${safeName || "image"}-processed.${ext}`;
-          document.body.appendChild(link);
-          link.click();
-          setTimeout(() => {
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-          }, 0);
-
-          rightErrorImg.style.color = "#4ade80";
-          rightErrorImg.textContent = `Download started for ${item.name}`;
-          setTimeout(() => {
-            rightErrorImg.textContent = "";
-            rightErrorImg.style.color = "#f97373";
-          }, 1500);
-        });
-
         buttonsRow.appendChild(copyBtn);
-        buttonsRow.appendChild(downloadTxtBtn);
-        buttonsRow.appendChild(downloadImgBtn);
+        buttonsRow.appendChild(downloadBtn);
         card.appendChild(header);
         card.appendChild(textarea);
         card.appendChild(buttonsRow);
@@ -1467,7 +1415,7 @@
       if (!imageItems[index]) return;
       currentPreviewIndex = index;
       const item = imageItems[index];
-      currentImageDataUrl = item.dataUrl; // used by left download button
+      currentImageDataUrl = item.dataUrl;
       previewImage.src = currentImageDataUrl;
       previewImage.style.display = "block";
       previewPlaceholder.style.display = "none";
@@ -1479,17 +1427,30 @@
       });
     }
 
-    qualityRange.addEventListener("input", () => {
-      qualityValue.textContent = qualityRange.value + "%";
+    // ---- DEBOUNCE ----
+    function debounce(fn, delay) {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), delay);
+      };
+    }
+
+    const reprocessImages = () => {
       if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
         handleFiles(lastFiles);
       }
+    };
+
+    const debouncedReprocess = debounce(reprocessImages, 350);
+
+    qualityRange.addEventListener("input", () => {
+      qualityValue.textContent = qualityRange.value + "%";
+      debouncedReprocess();
     });
 
     formatSelect.addEventListener("change", () => {
-      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
-        handleFiles(lastFiles);
-      }
+      debouncedReprocess();
     });
     
     base64OnlyCheckbox.addEventListener("change", () => {
@@ -1499,24 +1460,19 @@
     });
 
     resizeModeSelect.addEventListener("change", () => {
-      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
-        handleFiles(lastFiles);
-      }
+      debouncedReprocess();
     });
+
     resizeWidthInput.addEventListener("input", () => {
-      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
-        handleFiles(lastFiles);
-      }
+      debouncedReprocess();
     });
+
     resizeHeightInput.addEventListener("input", () => {
-      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
-        handleFiles(lastFiles);
-      }
+      debouncedReprocess();
     });
+
     watermarkTextInput.addEventListener("input", () => {
-      if (currentMode === "imageToBase64" && lastFiles && lastFiles.length > 0) {
-        handleFiles(lastFiles);
-      }
+      debouncedReprocess();
     });
 
     downloadAllBtn.addEventListener("click", () => {
@@ -1578,7 +1534,7 @@
       if (parts.length < 2) return null;
 
       const mimeMatch = parts[0].match(/data:(.*?);base64/);
-      const mime = mimeMatch ? mimeMatch[1] : 'image/png';
+      const mime = mimeMatch ? mimeMatch[1] : "image/png";
 
       const bstr = atob(parts[1]);
       let n = bstr.length;
@@ -1595,15 +1551,6 @@
       return match ? match[1] : 'image/png';
     }
 
-    function getExtFromMime(mime) {
-      if (mime === "image/jpeg") return "jpg";
-      if (mime === "image/webp") return "webp";
-      if (mime === "image/png") return "png";
-      if (mime === "image/gif") return "gif";
-      if (mime === "image/svg+xml") return "svg";
-      return "png";
-    }
-
     function varCss(name) {
       return getComputedStyle(document.documentElement).getPropertyValue(`--${name}`);
     }
@@ -1614,55 +1561,6 @@
     });
     previewImageB64.addEventListener("click", () => {
       previewImageB64.classList.toggle("zoomed");
-    });
-
-    // NEW: download processed image from the left preview (current image)
-    downloadProcessedImageBtn.addEventListener("click", () => {
-      leftError.textContent = "";
-      leftError.style.color = "#f97373";
-
-      if (currentMode !== "imageToBase64") {
-        leftError.textContent = "Switch to Image → Base64 to download processed image.";
-        return;
-      }
-
-      if (!currentImageDataUrl) {
-        leftError.textContent = "No image to download. Upload an image and select a thumbnail first.";
-        return;
-      }
-
-      const blob = dataUrlToBlob(currentImageDataUrl);
-      if (!blob) {
-        leftError.textContent = "Could not prepare image for download.";
-        return;
-      }
-
-      const mime = getDataUrlMime(currentImageDataUrl);
-      const ext = getExtFromMime(mime);
-      let filename = "image-processed." + ext;
-
-      if (currentPreviewIndex >= 0 && imageItems[currentPreviewIndex]) {
-        const safeName = imageItems[currentPreviewIndex].name.replace(/[^a-z0-9_\-\.]/gi, "_");
-        filename = (safeName || "image") + "-processed." + ext;
-      }
-
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      setTimeout(() => {
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }, 0);
-
-      leftError.style.color = "#4ade80";
-      leftError.textContent = "Download initiated.";
-      setTimeout(() => {
-        leftError.textContent = "";
-        leftError.style.color = "#f97373";
-      }, 1500);
     });
 
     // Base64 → Image
@@ -1754,12 +1652,10 @@
         return;
       }
 
-      const mime = getDataUrlMime(currentImageDataUrl);
-      const ext = getExtFromMime(mime);
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "image-from-base64." + ext;
+      link.download = "image-from-base64.png";
       document.body.appendChild(link);
       link.click();
       setTimeout(() => {
