@@ -870,7 +870,7 @@
 
         <!-- NEW: download processed image button under the preview -->
         <div class="buttons-row">
-          <button class="btn small" id="downloadProcessedImageBtn">Download image</button>
+          <button class="btn primary small" id="downloadProcessedImageBtn">Download image</button>
         </div>
 
         <div class="thumbs-wrapper" id="thumbsWrapper">
@@ -1389,7 +1389,7 @@
 
         // NEW: per-card download of processed image
         const downloadImgBtn = document.createElement("button");
-        downloadImgBtn.className = "btn small";
+        downloadImgBtn.className = "btn primary small";
         downloadImgBtn.textContent = "Download image";
         downloadImgBtn.addEventListener("click", () => {
           rightErrorImg.textContent = "";
