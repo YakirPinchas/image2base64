@@ -76,7 +76,8 @@
         </div>
 
         <div class="upload-area" id="uploadArea">
-          <p><strong>Click to select image(s)</strong> or drop them here</p>
+          <p class="upload-main"><strong>Start by dropping an image here</strong></p>
+          <p class="upload-sub">We’ll convert it to Base64 locally in your browser – no upload, no tracking.</p>
         </div>
 
         <input type="file" id="fileInput" accept="image/*,.svg,.svgz" multiple style="display:none;" />
@@ -107,16 +108,22 @@
             />
             <label for="base64OnlyCheckbox" style="margin-bottom: 0; font-size: 0.86rem; color: var(--text);">
               Base64 Only
+              <span class="help-icon" title="Output only the raw Base64 string, without the data:image/...;base64, prefix.">?</span>
             </label>
+
           </div>
           <div class="advanced-toggle">
             <button class="btn small" id="toggleAdvancedBtn" type="button">More options</button>
+            <span class="advanced-hint">Resize & watermark live here.</span>
           </div>
         </div>
 
         <div class="advanced-options" id="advancedOptions">
-          <div class="option">
-            <label for="resizeMode">Resize mode</label>
+         <div class="option">
+            <label for="resizeMode">
+              Resize mode
+              <span class="field-hint">Affects both Base64 output and downloaded images.</span>
+            </label>
             <select id="resizeMode" class="advanced-small-input">
               <option value="original">Original size</option>
               <option value="fit">Fit within (keep ratio)</option>
@@ -124,6 +131,7 @@
               <option value="up2">Upscale 2×</option>
             </select>
           </div>
+
           <div class="option">
             <label>Width / height (px)</label>
             <div style="display:flex; gap:6px;">
@@ -238,23 +246,27 @@
       </div>
     </section>
     
-    <div class="seo-text" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(55, 65, 81, 0.7);">
-      <h2 style="font-size: 1.2rem; color: var(--accent); margin-bottom: 8px;">What is Base64 and Why Convert Images?</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; line-height: 1.5;">
-        Base64 is a binary-to-text encoding scheme that converts binary data (like images) into a sequence of ASCII characters.
-        This is commonly used in web development and programming to embed image data directly into files like HTML, CSS, or JSON,
-        avoiding external HTTP requests. Converting small icons or design elements to Base64 speeds up website loading times by
-        reducing the number of server calls. Our <strong>free Image to Base64 Converter</strong> is fast and secure because
-        <strong>all processing is done locally in your browser</strong>, ensuring your files are never uploaded to any server.
-      </p>
-      <h3 style="font-size: 1rem; color: var(--muted); margin-bottom: 6px;">Key Benefits for Developers & Designers</h3>
-      <ul style="font-size: 0.8rem; color: var(--muted); padding-left: 20px; margin-top: 0; line-height: 1.5%;">
-        <li><strong>Performance:</strong> Embed small images directly into stylesheets to eliminate HTTP requests and improve load time.</li>
-        <li><strong>Advanced Features:</strong> Utilize built-in tools for <strong>resizing</strong>, <strong>quality control</strong>, and <strong>watermarking</strong> before conversion.</li>
-        <li><strong>Privacy:</strong> Enjoy maximum security with our "No Upload" guarantee for all conversions.</li>
-        <li><strong>Multi-Image Support:</strong> Easily convert multiple files in a single batch, and copy or download all results at once.</li>
-      </ul>
-    </div>
+   <div class="seo-text" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(55, 65, 81, 0.7);">
+    <h2 style="font-size: 1.2rem; color: var(--accent); margin-bottom: 8px;">
+      What is Base64 and When Should You Use It for Images?
+    </h2>
+    <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; line-height: 1.5;">
+      Base64 is a binary-to-text encoding scheme that converts binary data (like images) into a sequence of ASCII characters.
+      This is commonly used in web development and programming to embed image data directly into files like HTML, CSS, or JSON,
+      avoiding external HTTP requests. Converting small icons or design elements to Base64 can help reduce the number of server calls.
+      Our <strong>free Image to Base64 Converter</strong> is fast and secure because
+      <strong>all processing is done locally in your browser</strong>, so your files are never uploaded.
+    </p>
+  
+    <h3 style="font-size: 1rem; color: var(--muted); margin-bottom: 6px;">Who is this tool for?</h3>
+    <ul style="font-size: 0.8rem; color: var(--muted); padding-left: 20px; margin-top: 0; line-height: 1.5;">
+      <li><strong>Developers:</strong> Embed small images directly into stylesheets or JSON to eliminate HTTP requests and improve load time.</li>
+      <li><strong>Designers:</strong> Quickly resize, watermark and export assets for prototypes, emails and landing pages.</li>
+      <li><strong>Privacy-sensitive teams:</strong> Enjoy maximum security with our "No Upload" guarantee for all conversions.</li>
+      <li><strong>Automation lovers:</strong> Easily convert multiple files in a single batch, then copy or download all results at once.</li>
+    </ul>
+  </div>
+
 
     <footer>
       <span>Runs fully in your browser – no files are uploaded.</span>
