@@ -712,3 +712,56 @@ footer {
   gap: 6px;
   opacity: 0.75;
 }
+/* Upload CTA text */
+.upload-main {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+}
+
+.upload-sub {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* Advanced hint near "More options" */
+.advanced-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.advanced-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+/* Small helper under labels */
+.field-hint {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* Tiny help icon (for Base64 Only) */
+.help-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.8);
+  font-size: 0.65rem;
+  cursor: default;
+  color: var(--muted);
+}
+
+.help-icon:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
